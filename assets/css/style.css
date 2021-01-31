@@ -1,0 +1,29 @@
+body{
+  height: 100%;
+  background-image: url("../img/sun2.png");
+}
+.col{
+  text-align: center;
+  background-color: rgb(255,238,238);
+}
+.col-3{  text-align: center; }
+/* unvisited link */
+.col:link {
+  background-color: rgb(255,238,238);
+}
+
+/* visited link */
+.col:visited {
+  background-color: rgb(255,238,238);
+}
+
+/* mouse over link */
+.col:hover {
+  background-color: rgb(255,215,215);
+  background-color: #ffcccc77;
+}
+
+/* selected link */
+.col:active {
+  background-color: rgb(255,238,238);
+}
