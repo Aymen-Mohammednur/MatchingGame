@@ -5,6 +5,7 @@ body{
 .col{
   text-align: center;
   background-color: rgb(255,238,238);
+  height:3rem;
 }
 .col-3{  text-align: center; }
 /* unvisited link */
@@ -26,4 +27,7 @@ body{
 /* selected link */
 .col:active {
   background-color: rgb(255,238,238);
+}
+img{
+  max-height: 3rem;
 }
