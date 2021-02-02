@@ -26,7 +26,19 @@ function addImg(inpArray){
 	}
 }
 
-
+//shuffle array
+function shuffle(arr) {
+    var currentIndex = array.length, temp, randomIndex;
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temp = array[currentIndex];
+      arr[currentIndex] = array[randomIndex];
+      arr[randomIndex] = temp;
+    }
+  
+    return arr;
+}
 
 //Uncomment the code below to see how it working.
 
