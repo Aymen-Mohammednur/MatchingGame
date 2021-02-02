@@ -24,3 +24,62 @@ function addImg(inpArray){
 // 	addImg(obArray);
 // }
 // demo();
+
+
+// IndexDB
+let DB;
+
+document.addEventListener('DOMContentLoaded', () => {
+    let request = indexedDB.open('MatchingGame', 1);
+
+    request.onupgradeneeded = e => {
+        let db = e.target.result;
+        var objectStore;
+        if (!db.objectStoreNames.contains('MatchingGame')) {
+            objectStore = db.createObjectStore('MatchingGame', {keyPath: "user"});
+
+            objectStore.createIndex('user', 'user', {unique: true});
+            objectStore.createIndex('level', 'level', {unique: false});
+            objectStore.createIndex('cummulativeTime', 'cummulativeTime', {unique: false});
+
+            console.log("Database created!");
+        }
+        else {
+            console.log("Database already exists.")
+        }      
+    }
+
+    request.onsuccess = e => {
+        DB = request.result;
+        console.log("Success")
+    }
+
+    request.onerror = e => {
+        console.log('There was an error');
+    }
+
+
+    function addUser() {
+
+    }
+
+    function removeUser() {
+
+    }
+
+    function getUsers() {
+
+    }
+
+    function getLevel() {
+
+    }
+
+    function getTimer() {
+
+    }
+
+    function updateProgress() {
+
+    }
+});
