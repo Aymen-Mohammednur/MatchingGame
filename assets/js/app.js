@@ -59,27 +59,56 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    function addUser() {
+    function addUser(name) {
+
+        let transaction = DB.transaction('MatchingGame', 'readwrite');
+        let objectStore = transaction.objectStore('MatchingGame');
+
+        let request = objectStore.add(name);
+
+        request.oncomplete = () => {
+            console.log("New user added");
+        }
+        request.onerror = () => {
+            console.log("There was an error")
+        }
 
     }
 
-    function removeUser() {
+    function removeUser(name) {
+
+        let transaction = DB.transaction('MatchingGame', 'readwrite');
+        let objectStore = transaction.objectStore('MatchingGame');
+
+        objectStore.delete('name');
 
     }
 
     function getUsers() {
 
+        let transaction = DB.transaction('MatchingGame', 'readwrite');
+        let objectStore = transaction.objectStore('MatchingGame');
+
     }
 
     function getLevel() {
+
+        let transaction = DB.transaction('MatchingGame', 'readwrite');
+        let objectStore = transaction.objectStore('MatchingGame');
 
     }
 
     function getTimer() {
 
+        let transaction = DB.transaction('MatchingGame', 'readwrite');
+        let objectStore = transaction.objectStore('MatchingGame');
+
     }
 
     function updateProgress() {
+
+        let transaction = DB.transaction('MatchingGame', 'readwrite');
+        let objectStore = transaction.objectStore('MatchingGame');
 
     }
 });
