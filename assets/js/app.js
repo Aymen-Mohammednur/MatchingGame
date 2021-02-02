@@ -1,3 +1,22 @@
+const addBtn = document.querySelector("#add");
+addBtn.addEventListener('click',addUser);
+// genrate list as the user inputs
+function addUser(){
+    var txt = document.getElementById('newUser');
+    //var txtValue = txt.value;
+    if(txt.value===""){
+        txt.style.borderColor = "red";
+    return;
+    }
+    var ulNode = document.getElementById('list');
+    var liNode = document.createElement("li");
+    liNode.className = "list-group-item"
+    var txtNode = document.createTextNode(txt.value);
+
+    liNode.appendChild(txtNode);
+    ulNode.appendChild(liNode);
+    txt.value = "";
+}
 function addImg(inpArray){
 	for (var obj of inpArray){
 		var v = obj.value;
