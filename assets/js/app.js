@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let db = e.target.result;
         var objectStore;
         if (!db.objectStoreNames.contains('MatchingGame')) {
-            objectStore = db.createObjectStore('MatchingGame', {keyPath: "user"});
+            objectStore = db.createObjectStore('GameDatabase', {keyPath: "user"});
 
             objectStore.createIndex('user', 'user', {unique: true});
             objectStore.createIndex('level', 'level', {unique: false});
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function addUser(name) {
 
-        let transaction = DB.transaction('MatchingGame', 'readwrite');
+        let transaction = db.transaction('GameDatabase', 'readwrite');
         let objectStore = transaction.objectStore('MatchingGame');
 
         let request = objectStore.add(name);
@@ -172,3 +172,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 });
+
+// unMatch
+function unMatch() {
+    openedCards[0].classList.add("unmatched");
+    openedCards[1].classList.add("unmatched");
+    disable();
+
+    setInterval( () => {
+        openedCards[0].classList.remove("unmatched", "show", "open");
+        openedCards[0].classList.remove("unmatched", "show", "open");
+    },1000);
+
+    var card1 = openedCards.pop();
+    var card2 = openedCards.pop();
+    openedCards = Array();
+    enable();
+}
