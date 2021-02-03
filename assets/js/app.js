@@ -18,12 +18,41 @@ function addUser(){
     txt.value = "";
 }
 function addImg(inpArray){
-	for (var obj of inpArray){
-		var v = obj.value;
-		var k = obj.kind;
-		var cardPair = document.querySelectorAll(`.${k}`);
-		cardPair.forEach(function(card){card.innerHTML = `<img src = ${v}></img>`;});
-	}
+    var cards=[];
+    const matches = document.querySelectorAll("card");
+    matches.forEach(function(m){cards.push(m);});
+
+
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+      while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+      return array;
+    }
+    cards = shuffle(cards);
+    var l = cards.length/2;
+    for (var i = 0; i < l; i++){
+        var c1 = cards.shift();
+        var c2 = cards.shift();
+        c1.innerHTML = `<img src = ${inpArray[i].value}></img>`;
+        c1.parentNode.kind = inpArray[i].kind;
+
+        c2.innerHTML = `<img src = ${inpArray[i].value}></img>`;
+        c2.parentNode.kind = inpArray[i].kind;
+
+    }
+ //    for document.querySelector(".deck").childNodes
+    // for (var obj of inpArray){
+    //  var v = obj.value;
+    //  var k = obj.kind;
+    //  var cardPair = document.querySelectorAll(`.${k}`);
+    //  cardPair.forEach(function(card){card.innerHTML = `<img src = ${v}></img>`;});
+    // }
 }
 
 //shuffle array

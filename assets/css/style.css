@@ -2,6 +2,9 @@ body{
   height: 100%;
   background-image: url("../img/sun2.png");
 }
+img{
+  max-height: 2rem;
+}
 .col{
   text-align: center;
   background-color: rgb(255,238,238);
