@@ -189,3 +189,21 @@ function unMatch() {
     openedCards = Array();
     enable();
 }
+
+// startTimer
+var interval; // globalVariable
+var time; // document.getElementById("Our Class")
+
+function startTimer() {
+    var sec = 0, min = 0;
+    interval = setInterval( () => {
+        let timeSec = sec;
+        let timeMin = min;
+        time.innerText = timeMin + " : " + timeSec;
+        sec++;
+        if (sec == 60) {
+            min++;
+            sec = 0;
+        }
+    }, 1000)
+}
