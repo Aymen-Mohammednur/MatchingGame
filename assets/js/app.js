@@ -1,6 +1,7 @@
 const addBtn = document.querySelector("#add");
 addBtn.addEventListener('click',addUser);
 // genrate list as the user inputs
+var openedCards = new Array();
 function addUser(){
     var txt = document.getElementById('newUser');
     //var txtValue = txt.value;
@@ -206,4 +207,13 @@ function startTimer() {
             sec = 0;
         }
     }, 1000)
+}
+
+function openedCard(e){
+    if (openedCards.length == 2){
+        check();
+    }else{
+        openedCards.push(e);
+    }
+    
 }
