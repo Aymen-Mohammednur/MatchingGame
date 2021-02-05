@@ -217,3 +217,19 @@ function openedCard(e){
     }
     
 }
+function enable(){
+    var unmatched = document.querySelectorAll('.unmatched');
+    unmatched.forEach(() => {
+        if (document.querySelector('.disabled')){
+            document.querySelector('.disabled').classList.remove("disabled");
+        }else{
+            continue;
+        }
+    });
+}
+const reload = document.querySelector('.col-3');
+reload.addEventListener('click',quit);
+function quit(){
+    location.reload;
+    window.location.href("index.html");
+}
