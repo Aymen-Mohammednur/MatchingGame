@@ -207,3 +207,10 @@ function startTimer() {
         }
     }, 1000)
 }
+
+// displayCard
+function displayCard(e) {
+    e.classList.add("show");
+    e.classList.add("open");
+    e.classList.add("disabled");
+}
