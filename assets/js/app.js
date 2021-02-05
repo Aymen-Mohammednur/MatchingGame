@@ -89,89 +89,168 @@ function shuffle(arr) {
 // IndexDB
 let DB;
 
-document.addEventListener('DOMContentLoaded', () => {
-    let request = indexedDB.open('MatchingGame', 1);
-
-    request.onupgradeneeded = e => {
-        let db = e.target.result;
-        var objectStore;
-        if (!db.objectStoreNames.contains('MatchingGame')) {
-            objectStore = db.createObjectStore('GameDatabase', {keyPath: "user"});
-
-            objectStore.createIndex('user', 'user', {unique: true});
-            objectStore.createIndex('level', 'level', {unique: false});
-            objectStore.createIndex('cummulativeTime', 'cummulativeTime', {unique: false});
-
-            console.log("Database created!");
+// Creating the database
+window.onload = () => {
+        let gameDB = indexedDB.open('GameDatabase', 1);
+          
+        gameDB.onupgradeneeded = e => {
+            let db =  e.target.result;
+            if (!db.objectStoreNames.contains("MatchingGame")) {
+                let objectStore = db.createObjectStore("MatchingGame", {keyPath: "user"});
+    
+                objectStore.createIndex('user', 'user', {unique: true});
+                objectStore.createIndex('level', 'level', {unique: false});
+                objectStore.createIndex('cummulativeTime', 'cummulativeTime', {unique: false});
+    
+                console.log("Database created!");
+            }
+            else {
+                console.log("Database already exists.")
+            }      
         }
-        else {
-            console.log("Database already exists.")
-        }      
+    
+        gameDB.onsuccess = e => {
+            console.log("Success");
+            DB = gameDB.result;
+        }
+    
+        gameDB.onerror = e => {
+            console.log('There was an error');
+        }
+};
+
+// Adding users to the database
+function addUser(name) {
+    const newUser = {
+        user: name
     }
+
+    let transaction = DB.transaction("MatchingGame", "readwrite");
+    transaction.onerror = e => alert(`Error ${e.target.error}`);
+    let objectStore = transaction.objectStore("MatchingGame");
+
+    let request = objectStore.add(newUser);
+
+    request.oncomplete = () => {
+        console.log("New user added");
+    }
+    request.onerror = () => {
+        console.log("There was an error")
+    }
+
+}
+
+// Removing a user from the database
+function removeUser(name) {
+
+    let transaction = DB.transaction('MatchingGame', 'readwrite');
+    let objectStore = transaction.objectStore('MatchingGame');
+
+    objectStore.delete(name);
+
+}
+
+// Listing all the users
+function getUsers() {
+
+    let transaction = DB.transaction('MatchingGame', 'readonly');
+    let objectStore = transaction.objectStore('MatchingGame');
+    let request = objectStore.openCursor();
 
     request.onsuccess = e => {
-        DB = request.result;
-        console.log("Success")
-    }
-
-    request.onerror = e => {
-        console.log('There was an error');
-    }
-
-
-    function addUser(name) {
-
-        let transaction = db.transaction('GameDatabase', 'readwrite');
-        let objectStore = transaction.objectStore('MatchingGame');
-
-        let request = objectStore.add(name);
-
-        request.oncomplete = () => {
-            console.log("New user added");
+        let cursor = e.target.result;
+        if (cursor) {
+            console.log(cursor.key);
+            cursor.continue();
         }
-        request.onerror = () => {
-            console.log("There was an error")
+    }
+
+    request.onerror = () => {
+        console.log("There was an error");
+    }
+
+}
+
+// Showing the level a user is on
+function getLevel(user) {
+
+    let transaction = DB.transaction('MatchingGame', 'readonly');
+    let objectStore = transaction.objectStore('MatchingGame');
+    let request = objectStore.openCursor();
+
+    request.onsuccess = e => {
+        let cursor = e.target.result;
+        if (cursor) {
+            if (cursor.key != user) {
+                cursor.continue();
+            }
+            else {
+                console.log(cursor.value.level);
+            }
         }
-
     }
 
-    function removeUser(name) {
-
-        let transaction = DB.transaction('MatchingGame', 'readwrite');
-        let objectStore = transaction.objectStore('MatchingGame');
-
-        objectStore.delete('name');
-
+    request.onerror = () => {
+        console.log("There was an error");
     }
 
-    function getUsers() {
+}
 
-        let transaction = DB.transaction('MatchingGame', 'readwrite');
-        let objectStore = transaction.objectStore('MatchingGame');
+// Shpwing the time it took a user to finish the game
+function getTime(user) {
 
+    let transaction = DB.transaction('MatchingGame', 'readonly');
+    let objectStore = transaction.objectStore('MatchingGame');
+    let request = objectStore.openCursor();
+
+    request.onsuccess = e => {
+        let cursor = e.target.result;
+        if (cursor) {
+            if (cursor.key != user) {
+                cursor.continue();
+            }
+            else {
+                console.log(cursor.value.cummulativeTime);
+            }
+        }
     }
 
-    function getLevel() {
-
-        let transaction = DB.transaction('MatchingGame', 'readwrite');
-        let objectStore = transaction.objectStore('MatchingGame');
-
+    request.onerror = () => {
+        console.log("There was an error");
     }
 
-    function getTimer() {
+}
 
-        let transaction = DB.transaction('MatchingGame', 'readwrite');
-        let objectStore = transaction.objectStore('MatchingGame');
-
+// Updating the database with new levels and time
+function updateProgress(user, level, cummulativeTime) {
+    let updated = {
+        user: user,
+        level: level,
+        cummulativeTime: cummulativeTime
     }
 
-    function updateProgress() {
+    let transaction = DB.transaction('MatchingGame', 'readwrite');
+    let objectStore = transaction.objectStore('MatchingGame');
 
-        let transaction = DB.transaction('MatchingGame', 'readwrite');
-        let objectStore = transaction.objectStore('MatchingGame');
+    let request = objectStore.openCursor();
 
+    request.onsuccess = e => {
+        let cursor = e.target.result;
+        if (cursor) {
+            if (cursor.key == user) {
+                var upd = objectStore.put(updated);
+                upd.onsuccess = function (e) {
+                    console.log("Update Success");
+                }
+                upd.onerror = function (e) {
+                    console.log("Update Failed");
+                }
+            }
+            cursor.continue();
+        }
     }
-});
+
+}
 
 // unMatch
 function unMatch() {
