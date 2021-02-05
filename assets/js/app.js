@@ -1,4 +1,5 @@
 const addBtn = document.querySelector("#add");
+
 addBtn.addEventListener('click',addUser);
 // genrate list as the user inputs
 var openedCards = new Array();
@@ -18,6 +19,39 @@ function addUser(){
     ulNode.appendChild(liNode);
     txt.value = "";
 }
+
+//checks for duplicates. Accepts NodeList or normal list of Node Elements and compares kinds to find duplicates.
+function check(openedCards){
+    var matchFound = false;
+    var cards = [];
+
+  function card(c){
+      this.card = c;
+      this.kind = c.getAttribute("kind");
+  }
+
+
+  openedCards.forEach(function(singleCard){ cards.push(new card(singleCard));});
+  cards.sort((a, b) => (a.kind > b.kind) ? 1 : -1);
+
+  for (let i = 0; i < cards.length-1; i++){
+    if (cards[i].kind==cards[i+1].kind){
+        matchFound = true;
+    }
+  }
+  if (matchFound){
+    match();
+  } else {
+    unmatch();
+  }
+}
+
+function disable(){
+    var unmatchedElements = document.querySelectorAll(".unmatched");
+    unmatchedElements.forEach(function(unmatchedElement){unmatchedElement.classList.add("disabled");});
+}
+
+//Add populate cards
 function addImg(inpArray){
     var cards=[];
     const matches = document.querySelectorAll("card");
@@ -47,14 +81,10 @@ function addImg(inpArray){
         c2.parentNode.kind = inpArray[i].kind;
 
     }
- //    for document.querySelector(".deck").childNodes
-    // for (var obj of inpArray){
-    //  var v = obj.value;
-    //  var k = obj.kind;
-    //  var cardPair = document.querySelectorAll(`.${k}`);
-    //  cardPair.forEach(function(card){card.innerHTML = `<img src = ${v}></img>`;});
-    // }
 }
+
+//Add 
+
 
 //shuffle array
 function shuffle(arr) {
@@ -70,21 +100,6 @@ function shuffle(arr) {
     return arr;
 }
 
-//Uncomment the code below to see how it working.
-
-// function demo(){
-// 	class dict{
-// 		constructor(v,k){
-// 			this.value = v;
-// 			this.kind = k;
-// 		}
-// 	}
-// 	var ob1 = new dict("assets/img/sun.png", "red");
-// 	var ob2 = new dict("assets/img/sun2.png", "blue");
-// 	var obArray = [ob1, ob2];
-// 	addImg(obArray);
-// }
-// demo();
 
 
 // IndexDB
@@ -302,7 +317,7 @@ function enable(){
         if (document.querySelector('.disabled')){
             document.querySelector('.disabled').classList.remove("disabled");
         }else{
-            continue;
+            continue; 
         }
     });
 }
