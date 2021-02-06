@@ -1,4 +1,6 @@
 const addBtn = document.querySelector("#add");
+var interval; // globalVariable
+var time; // document.getElementById("Our Class")
 
 addBtn.addEventListener('click',addUser);
 // genrate list as the user inputs
@@ -268,6 +270,13 @@ function updateProgress(user, level, cummulativeTime) {
 
 }
 
+function next(currentUser){
+    if (getLevel(currentUser)!=3){
+        updateProgress(currentUser, setLevel(currentUser, getLevel(currentUser)+1), time.innerText);
+        window.open(`level${getLevel(currentUser)-1}.html`)
+    }
+}
+
 // unMatch
 function unMatch() {
     openedCards[0].classList.add("unmatched");
@@ -286,8 +295,6 @@ function unMatch() {
 }
 
 // startTimer
-var interval; // globalVariable
-var time; // document.getElementById("Our Class")
 
 function startTimer() {
     var sec = 0, min = 0;
