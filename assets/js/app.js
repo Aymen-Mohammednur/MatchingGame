@@ -239,6 +239,25 @@ function getTime(user) {
 
 }
 
+function setLevel(user, level) {
+    let transaction = DB.transaction('MatchingGame', 'readwrite');
+    let objectStore = transaction.objectStore('MatchingGame');
+
+    let request = objectStore.openCursor();
+
+    request.onsuccess = e => {
+        let cursor = e.target.result;
+        if (cursor) {
+            if (cursor.key != user) {
+                cursor.continue();
+            }
+            else {
+                cursor.value.level = level;
+            }
+        }
+    }
+}
+
 // Updating the database with new levels and time
 function updateProgress(user, level, cummulativeTime) {
     let updated = {
