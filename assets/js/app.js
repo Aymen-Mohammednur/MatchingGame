@@ -203,7 +203,7 @@ function getLevel(user) {
                 cursor.continue();
             }
             else {
-                console.log(cursor.value.level);
+                return cursor.value.level;
             }
         }
     }
@@ -228,7 +228,7 @@ function getTime(user) {
                 cursor.continue();
             }
             else {
-                console.log(cursor.value.cummulativeTime);
+                return cursor.value.cummulativeTime;
             }
         }
     }
