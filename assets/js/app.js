@@ -178,8 +178,12 @@ function getUsers() {
     request.onsuccess = e => {
         let cursor = e.target.result;
         if (cursor) {
-            console.log(cursor.key);
-            cursor.continue();
+            if (cursor.key) {
+                return cursor.key;
+            }
+            else {
+                cursor.continue();
+            }
         }
     }
 
