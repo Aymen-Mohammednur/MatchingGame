@@ -201,7 +201,7 @@ function initializeDB() {
 }
 
 // Adding users to the database
-function addUser(name) {
+function addUserToDatabase(name) {
   const newUser = {
     user: name,
   }
@@ -220,6 +220,11 @@ function addUser(name) {
   }
 }
 
+function addUser() {
+  addUserToDatabase(nameInputField.value);
+  nameInputField.value = "";
+  fetchUsers();
+}
 // Removing a user from the database
 function removeUser(name) {
   let transaction = DB.transaction('MatchingGame', 'readwrite')
