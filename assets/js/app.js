@@ -490,3 +490,6 @@ function showHome() {
 function disable() {
   cover.classList.add('disable')
 }
+function hideModal() {
+  hideElement(modal)
+}
