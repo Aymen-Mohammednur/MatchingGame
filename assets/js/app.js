@@ -53,6 +53,14 @@ function disable(){
     unmatchedElements.forEach(function(unmatchedElement){unmatchedElement.classList.add("disabled");});
 }
 
+function match(){
+    openedCards.forEach((e)=>{
+        e.toggle("solved");
+    });
+    openedCards.pop();
+    openedCards.pop();
+}
+
 //Add populate cards
 function addImg(inpArray){
     var cards=[];
@@ -356,4 +364,18 @@ reload.addEventListener('click',quit);
 function quit(){
     location.reload;
     window.location.href("index.html");
+}
+
+document.querySelector('[kind]').forEach((e)=>{
+    e.addEventListener('click',openedCard);
+    e.addEventListener('click',congruatulation);
+    e.addEventListener('click',displayCard);
+});
+
+function congruatulation(){
+    if(document.querySelector('.matched').size() == 
+    document.querySelector('[kind]').size()){
+        document.querySelector('#myModal').display = 'block';
+    }
+    // TODO: end time, save score
 }
