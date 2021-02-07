@@ -376,3 +376,7 @@ function congruatulation() {
 function showGameBoard() {
   displayScreen('.screen2')
 }
+
+function displayScreen(screen) {
+  document.querySelector(screen).style.display = 'block'
+}
