@@ -487,3 +487,6 @@ function check() {
 function showHome() {
   displayScreen('.screen1')
 }
+function disable() {
+  cover.classList.add('disable')
+}
