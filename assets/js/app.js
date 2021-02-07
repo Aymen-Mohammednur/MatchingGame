@@ -219,7 +219,9 @@ function addUserToDatabase(name) {
     console.log('There was an error')
   }
 }
-
+function addEventListenerToAddButton() {
+  addBtn.addEventListener('click', addUser, false);
+}
 function addUser() {
   addUserToDatabase(nameInputField.value);
   nameInputField.value = "";
