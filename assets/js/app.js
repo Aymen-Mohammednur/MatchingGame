@@ -484,3 +484,6 @@ function check() {
     unmatch()
   }
 }
+function showHome() {
+  displayScreen('.screen1')
+}
