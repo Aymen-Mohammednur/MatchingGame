@@ -234,7 +234,10 @@ function removeUser(name) {
 
   objectStore.delete(name)
 }
-
+function updateGameBar(level){
+  bginfo.firstElementChild.textContent = "Level: " + level;
+  bginfo.lastElementChild.addEventListener("click", quit);
+}
 // Listing all the users
 function getUsers() {
   return new Promise((resolve, reject)=>{
