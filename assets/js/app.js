@@ -493,3 +493,24 @@ function disable() {
 function hideModal() {
   hideElement(modal)
 }
+function next() {
+  getLevel(currentUser).then((response)=>{
+    level = response.level + 1;
+    numLevels = gameConfig.levels
+    if (level - 1 < numLevels.length) {
+      updateProgress(currentUser, level, Number(time.innerText))
+      let boardSize = 2 + 2*level
+      removeAllScreens();
+      showGameBoard();
+      updateGameBar(level)
+      paintGameBoard(level - 1)
+      clearInterval(interval)
+      startTimer()
+      hideModal()
+    } else {
+      removeAllScreens()
+      showHome()
+    }
+  })
+  
+}
