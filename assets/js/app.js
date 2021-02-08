@@ -514,3 +514,18 @@ function next() {
   })
   
 }
+function unmatch() {
+  const [cardOne, cardTwo] = openedCards
+  cardOne.classList.add('unmatched')
+  cardTwo.classList.add('unmatched')
+  disable()
+console.log(openedCards)
+  setTimeout(() => {
+    cardOne.classList.remove('unmatched', 'open')
+    cardTwo.classList.remove('unmatched', 'open')
+    cardOne.classList.add('covered')
+    cardTwo.classList.add('covered')
+    openedCards = new Array()
+    enable()
+  }, 1000)
+}
