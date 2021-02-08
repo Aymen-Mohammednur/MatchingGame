@@ -1,10 +1,30 @@
+var level1 = [{value:'<i class="fas fa-camera">',kind:"camera"},
+     {value:'<i class="fas fa-balance-scale-left">',kind:"scale"},
+     {value:'<i class="fas fa-bed"></i>',kind:"bed"},
+     {value:'<i class="fas fa-ambulance">',kind:"ambulance"},
+     {value:'<i class="fas fa-ambulance">',kind:"ambulance"},
+     {value:'<i class="fas fa-balance-scale-left">',kind:"scale"},
+     {value:'<i class="fas fa-bed"></i>',kind:"bed"},
+     {value:'<i class="fas fa-camera">',kind:"camera"},
+     {value:'<i class="fas fa-handshake-o">',kind:"handshake"},
+     {value:'<i class="fas fa-shower">',kind:"shower"},
+     {value:'<i class="fas fa-snowflake-o">',kind:"snowflake"},
+     {value:'<i class="fas fa-bell">',kind:"bell"},
+     {value:'<i class="fas fa-handshake-o">',kind:"handshake"},
+     {value:'<i class="fas fa-shower">',kind:"shower"},
+     {value:'<i class="fas fa-snowflake-o">',kind:"snowflake"},
+     {value:'<i class="fas fa-bell">',kind:"bell"}
+]
+
+
 const addBtn = document.querySelector("#add");
 var interval; // globalVariable
 var time; // document.getElementById("Our Class")
 
-addBtn.addEventListener('click',addUser);
+// addBtn.addEventListener('click',addUser);
 // genrate list as the user inputs
 var openedCards = new Array();
+
 function addUser(){
     var txt = document.getElementById('newUser');
     //var txtValue = txt.value;
@@ -21,41 +41,33 @@ function addUser(){
     ulNode.appendChild(liNode);
     txt.value = "";
 }
-
+function getKind(element){
+    const kind = element.firstChild.getAttribute("kind");
+    console.log(kind);
+    return kind;
+}
 //checks for duplicates. Accepts NodeList or normal list of Node Elements and compares kinds to find duplicates.
-function check(openedCards){
-    var matchFound = false;
-    var cards = [];
-
-  function card(c){
-      this.card = c;
-      this.kind = c.getAttribute("kind");
-  }
-
-
-  openedCards.forEach(function(singleCard){ cards.push(new card(singleCard));});
-  cards.sort((a, b) => (a.kind > b.kind) ? 1 : -1);
-
-  for (let i = 0; i < cards.length-1; i++){
-    if (cards[i].kind==cards[i+1].kind){
-        matchFound = true;
+function check(){
+    if(getKind(openedCards[0]) === getKind(openedCards[1])){
+        
+        match();
+    }else{
+        unmatch();
     }
-  }
-  if (matchFound){
-    match();
-  } else {
-    unmatch();
-  }
 }
 
 function disable(){
-    var unmatchedElements = document.querySelectorAll(".unmatched");
-    unmatchedElements.forEach(function(unmatchedElement){unmatchedElement.classList.add("disabled");});
+    var unmatchedElements = document.querySelectorAll(".col");
+    unmatchedElements.forEach(function(unmatchedElement){
+        unmatchedElement.setAttribute("disabled", true);
+    });
 }
 
 function match(){
     openedCards.forEach((e)=>{
-        e.toggle("solved");
+        e.classList.add("solved");
+        e.classList.remove('covered');
+        e.setAttribute("disabled", true);
     });
     openedCards.pop();
     openedCards.pop();
@@ -63,38 +75,13 @@ function match(){
 
 //Add populate cards
 function addImg(inpArray){
-    var cards=[];
-    const matches = document.querySelectorAll("card");
-    matches.forEach(function(m){cards.push(m);});
+    const cards = document.querySelectorAll("card");
 
-
-    function shuffle(array) {
-      var currentIndex = array.length, temporaryValue, randomIndex;
-      while (0 !== currentIndex) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-      }
-      return array;
-    }
-    cards = shuffle(cards);
-    var l = cards.length/2;
-    for (var i = 0; i < l; i++){
-        var c1 = cards.shift();
-        var c2 = cards.shift();
-        c1.innerHTML = `<img src = ${inpArray[i].value}></img>`;
-        c1.parentNode.kind = inpArray[i].kind;
-
-        c2.innerHTML = `<img src = ${inpArray[i].value}></img>`;
-        c2.parentNode.kind = inpArray[i].kind;
-
+    for (var i = 0; i < inpArray.length; i++){
+        cards[i].innerHTML = inpArray[i].value;
+        cards[i].setAttribute('kind', inpArray[i].kind);
     }
 }
-
-//Add 
-
 
 //shuffle array
 function shuffle(arr) {
@@ -286,7 +273,7 @@ function updateProgress(user, level, cummulativeTime) {
     request.onsuccess = e => {
         let cursor = e.target.result;
         if (cursor) {
-            if (cursor.key == user) {
+            if (cursor.key === user) {
                 var upd = objectStore.put(updated);
                 upd.onsuccess = function (e) {
                     console.log("Update Success");
@@ -309,20 +296,24 @@ function next(currentUser){
 }
 
 // unMatch
-function unMatch() {
-    openedCards[0].classList.add("unmatched");
-    openedCards[1].classList.add("unmatched");
+function unmatch() {
+    const [cardOne, cardTwo] = openedCards;
+    cardOne.classList.add("unmatched");
+    cardTwo.classList.add("unmatched");
     disable();
 
-    setInterval( () => {
-        openedCards[0].classList.remove("unmatched", "show", "open");
-        openedCards[0].classList.remove("unmatched", "show", "open");
+    setTimeout( () => {
+        console.log(openedCards)
+        cardOne.classList.remove("unmatched", "show", "open");
+        cardTwo.classList.remove("unmatched", "show", "open");
+        cardOne.classList.add("covered");
+        cardTwo.classList.add("covered")
+        openedCards = new Array();
+        enable();
     },1000);
 
-    var card1 = openedCards.pop();
-    var card2 = openedCards.pop();
-    openedCards = Array();
-    enable();
+    
+
 }
 
 // startTimer
@@ -334,7 +325,7 @@ function startTimer() {
         let timeMin = min;
         time.innerText = timeMin + " : " + timeSec;
         sec++;
-        if (sec == 60) {
+        if (sec === 60) {
             min++;
             sec = 0;
         }
@@ -342,21 +333,16 @@ function startTimer() {
 }
 
 function openedCard(e){
-    if (openedCards.length == 2){
-        check();
-    }else{
-        openedCards.push(e);
+    openedCards.push(e.target);
+    if (openedCards.length === 2){
+        check(e.target);
     }
     
 }
 function enable(){
-    var unmatched = document.querySelectorAll('.unmatched');
-    unmatched.forEach(() => {
-        if (document.querySelector('.disabled')){
-            document.querySelector('.disabled').classList.remove("disabled");
-        }else{
-            continue; 
-        }
+    var unmatched = document.querySelectorAll('.col');
+    unmatched.forEach((e) => {
+        e.setAttribute("disabled", false);
     });
 }
 const reload = document.querySelector('.col-3');
@@ -366,16 +352,35 @@ function quit(){
     window.location.href("index.html");
 }
 
-document.querySelector('[kind]').forEach((e)=>{
-    e.addEventListener('click',openedCard);
-    e.addEventListener('click',congruatulation);
-    e.addEventListener('click',displayCard);
-});
+function displayCard(e){
+    e.target.classList.add("show");
+    e.target.classList.add("open");
+    e.target.classList.remove("covered");
+}
+
+function addEventListenerToButtons() {
+    document.querySelectorAll('.col').forEach((e)=>{
+        e.addEventListener('click',openedCard);
+        e.addEventListener('click',congruatulation);
+        e.addEventListener('click',displayCard);
+    });
+}
+
+
 
 function congruatulation(){
-    if(document.querySelector('.matched').size() == 
-    document.querySelector('[kind]').size()){
+    if(document.querySelectorAll('.matched').length === 
+    document.querySelectorAll('[kind]').length){
         document.querySelector('#myModal').display = 'block';
     }
     // TODO: end time, save score
 }
+
+(function start(){
+    addImg(level1);
+    // startTimer();
+    addEventListenerToButtons();
+    console.log("start game")
+}());
+
+window.on
