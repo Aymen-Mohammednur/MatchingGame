@@ -529,3 +529,15 @@ console.log(openedCards)
     enable()
   }, 1000)
 }
+function openedCard(e) {
+  if (
+    e.target.getAttribute('disabled') ||
+    e.target.classList.contains('open')
+  ) {
+    return
+  }
+  openedCards.push(e.target)
+  if (openedCards.length === 2) {
+    check(e.target)
+  }
+}
