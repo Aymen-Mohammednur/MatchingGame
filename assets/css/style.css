@@ -1,41 +1,43 @@
-body{
+body {
   height: 100%;
-  background-image: url("../img/sun2.png");
+  background-image: url('../img/sun2.png');
 }
-img{
+img {
   max-height: 2rem;
 }
-.col{
-  display:flex;
+.col {
+  display: flex;
   text-align: center;
-  background-color: rgb(255,238,238);
-  height:3rem;
+  background-color: rgb(255, 238, 238);
+  height: 3rem;
   align-items: center;
   justify-content: center;
   border: 2px solid black;
   border-radius: 4px;
   box-shadow: 2px 2px #222;
 }
-.col-3{  text-align: center; }
+.col-3 {
+  text-align: center;
+}
 /* unvisited link */
 .col:link {
-  background-color: rgb(255,238,238);
+  background-color: rgb(255, 238, 238);
 }
 
 /* visited link */
 .col:visited {
-  background-color: rgb(255,238,238);
+  background-color: rgb(255, 238, 238);
 }
 
 /* mouse over link */
 .col:hover {
-  background-color: rgb(255,215,215);
+  background-color: rgb(255, 215, 215);
   background-color: #ffcccc77;
 }
 
 /* selected link */
 .col:active {
-  background-color: rgb(255,238,238);
+  background-color: rgb(255, 238, 238);
 }
 
 .covered > * {
@@ -43,19 +45,19 @@ img{
   background-color: blue;
 }
 
-.gap{
+.gap {
   margin-top: 50px;
 }
-.userinput{
+.userinput {
   border: solid rgb(90, 89, 89) 0.5px;
   height: 50px;
   width: 100%;
 }
-.mp{
+.mp {
   margin-top: 3%;
-  float:right;
+  float: right;
 }
-.list-group{
+.list-group {
   list-style-type: none;
   font-weight: bold;
 }
@@ -70,8 +72,8 @@ img{
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
 /* Modal Content/Box */
@@ -100,16 +102,15 @@ img{
 
 .solved {
   background-color: rgb(93, 233, 168);
-  
 }
 .solved:hover {
   background-color: rgb(93, 233, 168);
 }
 
-@media (min-width: 992px) { 
-  .container{
+@media (min-width: 992px) {
+  .container {
     max-width: 40%;
-  } 
+  }
 }
 
 .cover {
@@ -119,8 +120,7 @@ img{
   top: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.4);
-  
+  background: transparent;
 }
 
 .disable {
