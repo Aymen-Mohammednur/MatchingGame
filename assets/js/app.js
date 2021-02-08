@@ -238,6 +238,10 @@ function updateGameBar(level){
   bginfo.firstElementChild.textContent = "Level: " + level;
   bginfo.lastElementChild.addEventListener("click", quit);
 }
+function deleteUser(username) {
+  removeUser(username);
+  fetchUsers();
+}
 // Listing all the users
 function getUsers() {
   return new Promise((resolve, reject)=>{
