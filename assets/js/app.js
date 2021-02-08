@@ -352,12 +352,10 @@ function addEventListenerToButtons() {
 }
 
 function congruatulation() {
-  if (
-    document.querySelectorAll('.matched').length ===
-    document.querySelectorAll('[kind]').length
-  ) {
+  if (document.querySelectorAll('.solved').length === level1.length) {
     interval = undefined
-    document.querySelector('#myModal').display = 'block'
+    console.log('All are solved')
+    document.querySelector('#myModal').style.display = 'block'
   }
   // TODO: end time, save score
 }
