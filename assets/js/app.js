@@ -464,3 +464,17 @@ function removeAllScreens() {
     hideElement(screen)
   })
 }
+
+function play(user) {
+  currentUser = user;
+  getLevel(currentUser).then((response)=>{
+    level = response.level;
+    removeAllScreens();
+    showGameBoard();
+    clearInterval(interval);
+    startTimer();
+    updateGameBar(level);
+    paintGameBoard(level-1);
+  });
+
+}
