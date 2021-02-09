@@ -183,24 +183,21 @@ function getUsers() {
 
 // Showing the level a user is on
 function getLevel(user) {
-  let transaction = DB.transaction('MatchingGame', 'readonly')
-  let objectStore = transaction.objectStore('MatchingGame')
-  let request = objectStore.openCursor()
+  return new Promise((resolve, reject)=>{
+    let transaction = DB.transaction(['MatchingGame'], 'readonly')
+    let objectStore = transaction.objectStore('MatchingGame')
+    let request = objectStore.get(user);
 
-  request.onsuccess = e => {
-    let cursor = e.target.result
-    if (cursor) {
-      if (cursor.key != user) {
-        cursor.continue()
-      } else {
-        return cursor.value.level
-      }
+    request.onsuccess = e => {
+      resolve(request.result);
     }
-  }
 
-  request.onerror = () => {
-    console.log('There was an error')
+    request.onerror = () => {
+      reject();
+      console.log('There was an error')
   }
+  })
+  
 }
 
 // Shpwing the time it took a user to finish the game
