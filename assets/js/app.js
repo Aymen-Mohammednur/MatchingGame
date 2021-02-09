@@ -101,34 +101,39 @@ function shuffle(arr) {
 let DB
 
 // Creating the database
-window.onload = () => {
-  let gameDB = indexedDB.open('GameDatabase', 1)
+function initializeDB() {
+  return new Promise((resolve, reject)=>{
+    let gameDB = indexedDB.open('GameDatabase', 1)
 
-  gameDB.onupgradeneeded = e => {
-    let db = e.target.result
-    if (!db.objectStoreNames.contains('MatchingGame')) {
-      let objectStore = db.createObjectStore('MatchingGame', {keyPath: 'user'})
-
-      objectStore.createIndex('user', 'user', {unique: true})
-      objectStore.createIndex('level', 'level', {unique: false})
-      objectStore.createIndex('cummulativeTime', 'cummulativeTime', {
-        unique: false,
-      })
-
-      console.log('Database created!')
-    } else {
-      console.log('Database already exists.')
+    gameDB.onupgradeneeded = e => {
+      let db = e.target.result
+      if (!db.objectStoreNames.contains('MatchingGame')) {
+        let objectStore = db.createObjectStore('MatchingGame', {keyPath: 'user'})
+  
+        objectStore.createIndex('user', 'user', {unique: true})
+        objectStore.createIndex('level', 'level', {unique: false})
+        objectStore.createIndex('cummulativeTime', 'cummulativeTime', {
+          unique: false,
+        })
+  
+        console.log('Database created!')
+      } else {
+        console.log('Database already exists.')
+      }
     }
-  }
-
-  gameDB.onsuccess = e => {
-    console.log('Success')
-    DB = gameDB.result
-  }
-
-  gameDB.onerror = e => {
-    console.log('There was an error')
-  }
+  
+    gameDB.onsuccess = e => {
+      console.log('Success')
+      DB = gameDB.result
+      resolve();
+    }
+  
+    gameDB.onerror = e => {
+      console.log('There was an error')
+      reject();
+    }
+  })
+  
 }
 
 // Adding users to the database
