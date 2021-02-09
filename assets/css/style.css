@@ -127,3 +127,280 @@ img {
   display: block;
   z-index: 100;
 }
+*{
+  box-sizing: border-box;
+}
+body {
+  height: 100%;
+  background-image: url('../img/sun2.png');
+  font-family: 'Roboto', sans-serif;
+  font-weight: 800;
+}
+img {
+  max-height: 2rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+.screen{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.col {
+  display: flex;
+  text-align: center;
+  background-color: rgb(255, 238, 238);
+  height: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  border-radius: 4px;
+  box-shadow: 2px 2px #222;
+  perspective: 1000px;
+  margin: 0.15rem;
+  max-width: 19%;
+  min-width: 19%;
+  flex: 0 1 auto;
+}
+
+
+
+.btn {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+  }
+
+i {
+  font-size: 1.5rem;
+}
+
+.col-8 {
+    width: 400px;
+    background: #ddd;
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    margin: 1rem auto;
+}
+
+.col-2 {
+  text-align: center;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 2px 2px #222;
+  padding: 5px;
+}
+.col-2:hover {
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 2px 2px #222;
+}
+
+.bg-info {
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  color:black;
+  margin-left: auto;
+  background-color: #0dcaf0;
+  padding: 0.2rem 1rem;
+  text-align: center;
+}
+
+.level, .time {
+  align-self: center;
+}
+
+
+/* mouse over link */
+.col:hover {
+  background-color: #ffcccc4d;
+  cursor: pointer;
+}
+
+.covered > * {
+  display: none;
+}
+
+.gap {
+  margin-top: 50px;
+}
+.userinput {
+  border: none;
+  border-radius: 0.4rem;
+  height: 30px;
+  width: 100%;
+  padding: 8px;
+}
+.mp {
+  margin-top: 3%;
+  float: right;
+}
+.list-group {
+  list-style-type: none;
+  align-items: center;
+  background: white;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  min-width: 250px;
+  box-shadow: 0 5px 2px 0 #ccc;
+
+
+}
+
+.list-group > li{
+  margin:1rem;
+  background-color: #95c3de;
+  min-width: 250px;
+  box-shadow: 0 5px 2px 0 #ccc;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  align-items: center;
+}
+
+.delete-name {
+  color: red;
+  font-size: 1.2rem;
+}
+.delete-name:hover {
+  background:rgb(235, 60, 60);
+  color: white;
+  border-radius: 50%;
+
+}
+/* Modal */
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 35% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+
+}
+.modal-content > Button {
+  width:10rem;
+  margin: 10px auto;
+  color:white;
+}
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.solved {
+  background-color: rgb(93, 233, 168);
+}
+.solved:hover {
+  background-color: rgb(93, 233, 168);
+}
+.container {
+    width: 500px;
+    margin: 0 auto;
+}
+@media (max-width: 360px) {
+  i {
+  font-size: 1rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 40%;
+  }
+  
+
+}
+
+.cover {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+}
+
+.disable {
+  display: block;
+  z-index: 100;
+}
+
+.unmatched {
+  background-color: rgb(235, 60, 60);
+}
+
+.open {
+  transition: transform 0.2s;
+  transform-style: preserve-3d;
+  transform: rotateY(180deg);
+}
+
+
+#list > li:hover{
+  border-left: 2px #0dcaf0 solid;
+  font-weight: bold;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.congra {
+  text-align: center;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.time {
+  font-weight: bold;
+}
+
+.blue {
+  background: #286cff;
+}
+
+.yellow, .yellow:hover {
+  background: rgb(255, 218, 5);
+}
