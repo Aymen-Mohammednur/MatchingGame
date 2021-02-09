@@ -547,3 +547,11 @@ function quit() {
   showHome()
   clearInterval(interval)
 }
+function addEventForModalButtons() {
+  buttonNext.addEventListener('click', () => {
+    next()
+  })
+  buttonQuit.addEventListener('click', () => {
+    quit();
+  })
+}
