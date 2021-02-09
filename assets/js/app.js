@@ -541,3 +541,9 @@ function openedCard(e) {
     check(e.target)
   }
 }
+function quit() {
+  hideModal()
+  removeAllScreens()
+  showHome()
+  clearInterval(interval)
+}
