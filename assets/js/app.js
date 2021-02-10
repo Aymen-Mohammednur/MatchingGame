@@ -166,24 +166,27 @@ function removeUser(name) {
 
 // Listing all the users
 function getUsers() {
-  let transaction = DB.transaction('MatchingGame', 'readonly')
-  let objectStore = transaction.objectStore('MatchingGame')
-  let request = objectStore.openCursor()
+  return new Promise((resolve, reject)=>{
+    let transaction = DB.transaction('MatchingGame', 'readonly')
+    let objectStore = transaction.objectStore('MatchingGame')
+    let request = objectStore.openCursor()
+    let result = [];
 
-  request.onsuccess = e => {
-    let cursor = e.target.result
-    if (cursor) {
-      if (cursor.key) {
-        return cursor.key
-      } else {
-        cursor.continue()
+    request.onsuccess = e => {
+      let cursor = e.target.result
+      if (cursor) {
+        result.push(cursor.key);
+        cursor.continue();
+      }else{
+        resolve(result);
       }
     }
-  }
 
-  request.onerror = () => {
-    console.log('There was an error')
+    request.onerror = () => {
+      console.log('There was an error')
   }
+  })
+  
 }
 
 // Showing the level a user is on
