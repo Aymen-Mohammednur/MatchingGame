@@ -478,3 +478,10 @@ function play(user) {
   });
 
 }
+function check() {
+  if (getKind(openedCards[0]) === getKind(openedCards[1])) {
+    match()
+  } else {
+    unmatch()
+  }
+}
