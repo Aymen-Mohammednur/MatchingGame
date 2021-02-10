@@ -373,4 +373,6 @@ function congruatulation() {
   console.log('start game')
 })()
 
-window.on
+function showGameBoard() {
+  displayScreen('.screen2')
+}
