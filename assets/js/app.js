@@ -421,7 +421,6 @@ function quit() {
 }
 
 function displayCard(e) {
-  e.target.classList.add('show')
   e.target.classList.add('open')
   e.target.classList.remove('covered')
 }
