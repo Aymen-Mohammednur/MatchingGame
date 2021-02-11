@@ -444,3 +444,9 @@ function showGameBoard() {
 function displayScreen(screen) {
   document.querySelector(screen).style.display = 'block'
 }
+
+function removeAllScreens() {
+  screens.forEach(screen => {
+    hideElement(screen)
+  })
+}
