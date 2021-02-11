@@ -1,31 +1,95 @@
-var level1 = [
-  {value: '<i class="fas fa-camera">', kind: 'camera'},
-  {value: '<i class="fas fa-balance-scale-left">', kind: 'scale'},
-  {value: '<i class="fas fa-bed"></i>', kind: 'bed'},
-  {value: '<i class="fas fa-ambulance">', kind: 'ambulance'},
-  {value: '<i class="fas fa-ambulance">', kind: 'ambulance'},
-  {value: '<i class="fas fa-balance-scale-left">', kind: 'scale'},
-  {value: '<i class="fas fa-bed"></i>', kind: 'bed'},
-  {value: '<i class="fas fa-camera">', kind: 'camera'},
-  {value: '<i class="fas fa-handshake-o">', kind: 'handshake'},
-  {value: '<i class="fas fa-shower">', kind: 'shower'},
-  {value: '<i class="fas fa-snowflake-o">', kind: 'snowflake'},
-  {value: '<i class="fas fa-bell">', kind: 'bell'},
-  {value: '<i class="fas fa-handshake-o">', kind: 'handshake'},
-  {value: '<i class="fas fa-shower">', kind: 'shower'},
-  {value: '<i class="fas fa-snowflake-o">', kind: 'snowflake'},
-  {value: '<i class="fas fa-bell">', kind: 'bell'},
+var iconsList = [
+  'camera',
+  'camera',
+  'balance-scale',
+  'balance-scale',
+  'bed',
+  'bed',
+  'ambulance',
+  'ambulance',
+  'handshake',
+  'handshake',
+  'snowflake',
+  'snowflake',
+  'bell',
+  'bell',
+  'handshake',
+  'handshake',
+  'camera',
+  'camera',
+  'balance-scale',
+  'balance-scale',
+  'bed',
+  'bed',
+  'ambulance',
+  'ambulance',
+  'handshake',
+  'handshake',
+  'snowflake',
+  'snowflake',
+  'bell',
+  'bell',
+  'handshake',
+  'handshake',
+  'camera',
+  'camera',
+  'balance-scale',
+  'balance-scale',
+  'bed',
+  'bed',
+  'ambulance',
+  'ambulance',
+  'handshake',
+  'handshake',
+  'snowflake',
+  'snowflake',
+  'bell',
+  'bell',
+  'handshake',
+  'handshake',
+  'camera',
+  'camera',
+  'balance-scale',
+  'balance-scale',
+  'bed',
+  'bed',
+  'ambulance',
+  'ambulance',
+  'handshake',
+  'handshake',
+  'snowflake',
+  'snowflake',
+  'bell',
+  'bell',
+  'handshake',
+  'handshake',
 ]
-
+//// elements
 const addBtn = document.querySelector('#add')
-var interval // globalVariable
+const nameInputField = document.querySelector('#newUser');
+const usersList = document.querySelector('#list');
+var interval = null // globalVariable
 var time = document.querySelector('.time')
 var cover = document.querySelector('.cover')
-
-// addBtn.addEventListener('click',addUser);
-// genrate list as the user inputs
+var buttonQuit = document.querySelector('#quit')
+var buttonNext = document.querySelector('#next')
+var bginfo = document.querySelector('.bg-info')
+var timeSec = 0
+var timeMin = 0
+var screens = document.querySelectorAll('.screen')
+const modal = document.querySelector('#myModal')
+const reload = document.querySelector('.col-3')
+var currentUser = ''
+// generate list as the user inputs
 var openedCards = new Array()
+levelOne= [4, 4]; // 4 x 4 grid
+  levelTwo= [5, 6]; // 5 x 6 grid
+  levelThree= [6, 6]; // 6 x 6 grid
+var gameConfig = {
+  
+  levels: [levelOne, levelTwo, levelThree,]
 
+}
 function addUser() {
   var txt = document.getElementById('newUser')
   //var txtValue = txt.value;
