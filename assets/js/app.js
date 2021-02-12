@@ -131,11 +131,19 @@ function addUser() {
   txt.value = ''
 }
 function getKind(element) {
-  console.log(element)
   const kind = element.getAttribute('kind')
-  console.log(kind)
   return kind
 }
+
+function isAllSame(cards) {
+  if (cards.length === 0) return false;
+  const firstCard = cards[0];
+  for (let i = 1; i < cards.length; i++) {
+    if (getKind(firstCard) !== getKind(cards[i])) return false;
+  }
+  return true;
+}
+
 //checks for duplicates. Accepts NodeList or normal list of Node Elements and compares kinds to find duplicates.
 function check() {
   if (getKind(openedCards[0]) === getKind(openedCards[1])) {
