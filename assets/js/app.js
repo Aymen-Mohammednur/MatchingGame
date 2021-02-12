@@ -1,95 +1,119 @@
-var iconsList = [
-  'camera',
-  'camera',
-  'balance-scale',
-  'balance-scale',
-  'bed',
-  'bed',
-  'ambulance',
-  'ambulance',
-  'handshake',
-  'handshake',
-  'snowflake',
-  'snowflake',
-  'bell',
-  'bell',
-  'handshake',
-  'handshake',
-  'camera',
-  'camera',
-  'balance-scale',
-  'balance-scale',
-  'bed',
-  'bed',
-  'ambulance',
-  'ambulance',
-  'handshake',
-  'handshake',
-  'snowflake',
-  'snowflake',
-  'bell',
-  'bell',
-  'handshake',
-  'handshake',
-  'camera',
-  'camera',
-  'balance-scale',
-  'balance-scale',
-  'bed',
-  'bed',
-  'ambulance',
-  'ambulance',
-  'handshake',
-  'handshake',
-  'snowflake',
-  'snowflake',
-  'bell',
-  'bell',
-  'handshake',
-  'handshake',
-  'camera',
-  'camera',
-  'balance-scale',
-  'balance-scale',
-  'bed',
-  'bed',
-  'ambulance',
-  'ambulance',
-  'handshake',
-  'handshake',
-  'snowflake',
-  'snowflake',
-  'bell',
-  'bell',
-  'handshake',
-  'handshake',
-]
+const iconsList = [
+  "camera",
+  "camera",
+  "balance-scale",
+  "balance-scale",
+  "bed",
+  "bed",
+  "ambulance",
+  "ambulance",
+  "handshake",
+  "handshake",
+  "snowflake",
+  "snowflake",
+  "bell",
+  "bell",
+  "handshake",
+  "handshake",
+  "camera",
+  "camera",
+  "balance-scale",
+  "balance-scale",
+  "bed",
+  "bed",
+  "ambulance",
+  "ambulance",
+  "handshake",
+  "handshake",
+  "snowflake",
+  "snowflake",
+  "bell",
+  "bell",
+  "handshake",
+  "handshake",
+  "camera",
+  "camera",
+  "balance-scale",
+  "balance-scale",
+  "bed",
+  "bed",
+  "ambulance",
+  "ambulance",
+  "handshake",
+  "handshake",
+  "snowflake",
+  "snowflake",
+  "bell",
+  "bell",
+  "handshake",
+  "handshake",
+  "camera",
+  "camera",
+  "balance-scale",
+  "balance-scale",
+  "bed",
+  "bed",
+  "ambulance",
+  "ambulance",
+  "handshake",
+  "handshake",
+  "snowflake",
+  "snowflake",
+  "bell",
+  "bell",
+  "handshake",
+  "handshake",
+];
 //// elements
-const addBtn = document.querySelector('#add')
-const nameInputField = document.querySelector('#newUser');
-const usersList = document.querySelector('#list');
-var interval = null // globalVariable
-var time = document.querySelector('.time')
-var cover = document.querySelector('.cover')
-var buttonQuit = document.querySelector('#quit')
-var buttonNext = document.querySelector('#next')
-var bginfo = document.querySelector('.bg-info')
-var timeSec = 0
-var timeMin = 0
-var screens = document.querySelectorAll('.screen')
-const modal = document.querySelector('#myModal')
-const reload = document.querySelector('.col-3')
-var currentUser = ''
-// generate list as the user inputs
-var openedCards = new Array()
-levelOne= [4, 4]; // 4 x 4 grid
-  levelTwo= [5, 6]; // 5 x 6 grid
-  levelThree= [6, 6]; // 6 x 6 grid
-var gameConfig = {
-  
-  levels: [levelOne, levelTwo, levelThree,]
+const addBtn = document.querySelector("#add");
+const nameInputField = document.querySelector("#newUser");
+const usersList = document.querySelector("#list");
+const time = document.querySelector(".time");
+const cover = document.querySelector(".cover");
+const buttonQuit = document.querySelector("#quit");
+const buttonNext = document.querySelector("#next");
+const bginfo = document.querySelector(".bg-info");
+const secondsDOM = document.querySelector(".sec");
+const minutesDOM = document.querySelector(".min");
+const pauseGame = document.querySelector(".pause");
+const retryGame = document.querySelector(".retry");
+const level = document.querySelector(".level");
+const screens = document.querySelectorAll(".screen");
+const modal = document.querySelector("#myModal");
+const reload = document.querySelector(".col-3");
+const confetti = document.querySelector(".container-confetti");
+const intialState = {
+  play: false,
+  seconds: 0,
+  minutes: 0,
+  stopwatchInterval: null,
+  currentuser: null,
+  openedCards: [],
+  currentLevel: 1,
+};
+let state = { ...intialState };
+//// CONFIGURATION
+levelOne = [4, 4]; // 4 x 4 grid
+levelTwo = [5, 6]; // 5 x 6 grid
+levelThree = [6, 6]; // 6 x 6 grid
+const gameConfig = {
+  levels: [levelOne, levelTwo, levelThree],
+  memorySize: 2, // number of cards to match
+};
 
-}
+const sounds = {
+  winner: "/assets/sounds/winner.mp3",
+  solved: "/assets/sounds/solved.mp3",
+  wrong: "/assets/sounds/wrong.mp3",
+  moved: "/assets/sounds/moved.wav",
+  game: "/assets/sounds/game.wav",
+};
+const gameSound = new Sound(sounds.game, true);
+const moveSound = new Sound(sounds.moved);
+const wrongSound = new Sound(sounds.wrong);
+const solvedSound = new Sound(sounds.solved);
+const winnerSound = new Sound(sounds.winner);
+
 function addUser() {
   var txt = document.getElementById('newUser')
   //var txtValue = txt.value;
