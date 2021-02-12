@@ -174,23 +174,16 @@ function disable() {
 }
 
 function match() {
-  openedCards.forEach(e => {
-    e.classList.add('solved')
-    e.classList.remove('covered')
-    e.setAttribute('disabled', true)
-  })
-  openedCards.pop()
-  openedCards.pop()
+  solvedSound.play();
+  state.openedCards.forEach((e) => {
+    e.classList.remove("yellow");
+    e.classList.add("solved");
+  });
+  clearOpenedCards();
 }
 
-//Add populate cards
-function addImg(inpArray) {
-  const cards = document.querySelectorAll('.col')
-
-  for (var i = 0; i < inpArray.length; i++) {
-    cards[i].innerHTML = inpArray[i].value
-    cards[i].setAttribute('kind', inpArray[i].kind)
-  }
+function clearOpenedCards() {
+  state.openedCards = [];
 }
 
 //shuffle array
@@ -417,20 +410,20 @@ function next(currentUser) {
 
 // unMatch
 function unmatch() {
-  const [cardOne, cardTwo] = openedCards
-  cardOne.classList.add('unmatched')
-  cardTwo.classList.add('unmatched')
-  disable()
-
+  wrongSound.play();
+  disable();
+  state.openedCards.forEach((e) => {
+    e.classList.add("unmatched");
+    e.classList.remove("yellow");
+  });
   setTimeout(() => {
-    console.log(openedCards)
-    cardOne.classList.remove('unmatched', 'show', 'open')
-    cardTwo.classList.remove('unmatched', 'show', 'open')
-    cardOne.classList.add('covered')
-    cardTwo.classList.add('covered')
-    openedCards = new Array()
-    enable()
-  }, 1000)
+    state.openedCards.forEach((e) => {
+      e.classList.remove("unmatched", "open");
+      e.classList.add("covered");
+    });
+    enable();
+    clearOpenedCards();
+  }, 1000);
 }
 
 // startTimer
