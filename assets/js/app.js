@@ -144,6 +144,22 @@ function isAllSame(cards) {
   return true;
 }
 
+function Sound(src, loop = false) {
+  this.sound = document.createElement("audio");
+  loop && (this.sound.loop = true);
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function () {
+    this.sound.play().catch();
+  };
+  this.stop = function () {
+    this.sound.pause();
+  };
+}
+
 //checks for duplicates. Accepts NodeList or normal list of Node Elements and compares kinds to find duplicates.
 function check() {
   if (getKind(openedCards[0]) === getKind(openedCards[1])) {
