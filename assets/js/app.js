@@ -454,18 +454,11 @@ function unmatch() {
 
 // startTimer
 function startTimer() {
-  var sec = 0,
-    min = 0
-  interval = setInterval(() => {
-    let timeSec = sec
-    let timeMin = min
-    time.textContent = timeMin + ' : ' + timeSec
-    sec++
-    if (sec === 60) {
-      min++
-      sec = 0
-    }
-  }, 1000)
+  resetStopwatch();
+  state.stopwatchInterval = setInterval(() => {
+    setMinuteAndSecond(state.minutes, state.seconds);
+    updateTime();
+  }, 1000);
 }
 
 function openedCard(e) {
@@ -598,6 +591,18 @@ function showElement(element) {
 function resetMinuteAndSecond() {
   state.minutes = 0;
   state.seconds = 0;
+}
+
+function updateTime() {
+  state.seconds++;
+  if (state.seconds === 60) {
+    state.minutes++;
+    state.seconds = 0;
+  }
+}
+
+function resetStopwatch() {
+  clearInterval(state.stopwatchInterval);
 }
 
 function pause(e) {
