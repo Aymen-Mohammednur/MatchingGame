@@ -587,6 +587,18 @@ function showModal() {
   showElement(modal);
 }
 
+function hideElement(element) {
+  element.style.display = "none";
+}
+
+function showElement(element) {
+  element.style.display = "block";
+}
+
+function resetMinuteAndSecond() {
+  state.minutes = 0;
+  state.seconds = 0;
+}
 
 function next() {
   getLevel(currentUser).then((response)=>{
