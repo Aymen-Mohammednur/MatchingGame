@@ -115,21 +115,11 @@ const solvedSound = new Sound(sounds.solved);
 const winnerSound = new Sound(sounds.winner);
 
 function addUser() {
-  var txt = document.getElementById('newUser')
-  //var txtValue = txt.value;
-  if (txt.value === '') {
-    txt.style.borderColor = 'red'
-    return
-  }
-  var ulNode = document.getElementById('list')
-  var liNode = document.createElement('li')
-  liNode.className = 'list-group-item'
-  var txtNode = document.createTextNode(txt.value)
-
-  liNode.appendChild(txtNode)
-  ulNode.appendChild(liNode)
-  txt.value = ''
+  addUserToDatabase(nameInputField.value);
+  nameInputField.value = "";
+  fetchUsers();
 }
+
 function getKind(element) {
   const kind = element.getAttribute('kind')
   return kind
@@ -486,12 +476,8 @@ function displayCard(e) {
   e.target.classList.remove('covered')
 }
 
-function addEventListenerToButtons() {
-  document.querySelectorAll('.col').forEach(e => {
-    e.addEventListener('click', openedCard, false)
-    e.addEventListener('click', congruatulation, false)
-    e.addEventListener('click', displayCard, false)
-  })
+function addEventListenerToAddButton() {
+  addBtn.addEventListener("click", addUser, false);
 }
 
 function congruatulation() {
@@ -601,6 +587,16 @@ function updateTime() {
   }
 }
 
+
+function setMinuteAndSecond(min = 0, sec = 0) {
+  minutesDOM.textContent = min;
+  secondsDOM.textContent = sec;
+}
+
+function resetState() {
+  state = { ...intialState };
+}
+
 function resetStopwatch() {
   clearInterval(state.stopwatchInterval);
 }
@@ -618,6 +614,19 @@ function unpause() {
   gameSound.play();
 }
 
+function retry() {
+  removeAllScreens();
+  showGameBoard();
+  setMinuteAndSecond();
+  resetStopwatch();
+  resetMinuteAndSecond();
+  clearOpenedCards();
+  startTimer();
+  let l = state.currentLevel;
+  paintGameBoard(l - 1);
+  showAllCards();
+  gameSound.play();
+}
 
 function next() {
   getLevel(currentUser).then((response)=>{
@@ -668,16 +677,20 @@ function openedCard(e) {
   }
 }
 function quit() {
-  hideModal()
-  removeAllScreens()
-  showHome()
-  clearInterval(interval)
+  hideModal();
+  hideElement(confetti);
+  removeAllScreens();
+  showHome();
+  setMinuteAndSecond();
+  gameSound.stop();
+  resetStopwatch();
+  resetState();
 }
 function addEventForModalButtons() {
-  buttonNext.addEventListener('click', () => {
-    next()
-  })
-  buttonQuit.addEventListener('click', () => {
+  buttonNext.addEventListener("click", () => {
+    next();
+  });
+  buttonQuit.addEventListener("click", () => {
     quit();
-  })
+  });
 }
