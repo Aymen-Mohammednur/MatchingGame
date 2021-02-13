@@ -186,6 +186,36 @@ function clearOpenedCards() {
   state.openedCards = [];
 }
 
+function paintGameBoard(level) {
+  const [rowSize, colSize] = gameConfig.levels[level];
+  const size = rowSize * colSize;
+  const icons = iconsList.slice(0, size);
+  shuffle(icons);
+  const gameBoard = document.querySelector(".game-board");
+  gameBoard.textContent = "";
+  let row = document.createElement("div");
+  row.classList.add("row"); // create row
+  for (let c = 0; c < size; c++) {
+    let kind = icons[c];
+
+    let card = document.createElement("div"); // create card
+    card.classList.add("col", "covered");
+    card.setAttribute("kind", kind);
+
+    let icon = document.createElement("i"); // create icon
+    icon.classList.add("fas", `fa-${kind}`);
+    icon.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+    card.appendChild(icon);
+
+    card.addEventListener("click", onCardClick, false);
+
+    row.appendChild(card);
+  }
+  gameBoard.appendChild(row);
+}
+
 //shuffle array
 function shuffle(arr) {
   var currentIndex = arr.length,
@@ -462,6 +492,7 @@ function quit() {
 }
 
 function displayCard(e) {
+  moveSound.play();
   e.target.classList.add('open')
   e.target.classList.remove('covered')
 }
@@ -475,12 +506,26 @@ function addEventListenerToButtons() {
 }
 
 function congruatulation() {
-  if (document.querySelectorAll('.solved').length === level1.length) {
-    interval = undefined
-    console.log('All are solved')
-    document.querySelector('#myModal').style.display = 'block'
+  if (
+    document.querySelectorAll(".solved").length ===
+    document.querySelectorAll(".col").length
+  ) {
+    winnerSound.play();
+    pauseSound();
+    resetStopwatch();
+    updateProgress(
+      state.currentuser,
+      state.currentLevel + 1,
+      Number(time.innerText)
+    );
+    document.querySelector(".modal p").innerHTML = `
+      <h1 class="congra">Congruatulations!</h1><br/>You have sucessfully solved the puzzle.<br/>
+      <span class="time">Time:</span> ${state.minutes} min : ${state.seconds} sec
+    `;
+    showModal();
+    showElement(confetti);
+    pause();
   }
-  // TODO: end time, save score
 }
 
 ;(function start() {
@@ -519,12 +564,19 @@ function play(user) {
 
 }
 function check() {
-  if (getKind(openedCards[0]) === getKind(openedCards[1])) {
-    match()
+  if (isAllSame(state.openedCards)) {
+    match();
   } else {
-    unmatch()
+    unmatch();
   }
 }
+
+function matchOrUnmatchAtMemorySize() {
+  if (state.openedCards.length === gameConfig.memorySize) {
+    check();
+  }
+}
+
 function showHome() {
   displayScreen('.screen1')
 }
