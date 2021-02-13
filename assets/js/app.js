@@ -582,6 +582,12 @@ function disable() {
 function hideModal() {
   hideElement(modal)
 }
+
+function showModal() {
+  showElement(modal);
+}
+
+
 function next() {
   getLevel(currentUser).then((response)=>{
     level = response.level + 1;
