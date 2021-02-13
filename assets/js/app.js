@@ -600,6 +600,20 @@ function resetMinuteAndSecond() {
   state.seconds = 0;
 }
 
+function pause(e) {
+  resetStopwatch();
+  gameSound.stop();
+  state.isPaused = true;
+  pauseGame.textContent = "Paused";
+}
+
+function unpause() {
+  if (state.isPaused) pauseGame.textContent = "Pause";
+  startTimer();
+  gameSound.play();
+}
+
+
 function next() {
   getLevel(currentUser).then((response)=>{
     level = response.level + 1;
