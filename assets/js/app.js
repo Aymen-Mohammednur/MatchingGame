@@ -635,6 +635,26 @@ function updateGameBar(level) {
   bginfo.lastElementChild.addEventListener("click", quit);
 }
 
+function deleteUser(username) {
+  removeUser(username);
+  fetchUsers();
+}
+
+function showAllCards() {
+  disable();
+  document.querySelectorAll(".col").forEach((card) => {
+    card.classList.remove("covered");
+    card.classList.add("blue");
+  });
+  setTimeout(() => {
+    document.querySelectorAll(".col").forEach((card) => {
+      card.classList.add("covered");
+      card.classList.remove("blue");
+    });
+    enable();
+  }, 2000);
+}
+
 function fetchUsers() {
   const users = getUsers();
   usersList.textContent = "";
@@ -664,26 +684,33 @@ function fetchUsers() {
 }
 
 function next() {
-  getLevel(currentUser).then((response)=>{
-    level = response.level + 1;
-    numLevels = gameConfig.levels
+  hideModal();
+  gameSound.stop();
+  getLevel(state.currentuser).then((response) => {
+    let level = response.level;
+    state.currentLevel = level;
+    numLevels = gameConfig.levels;
     if (level - 1 < numLevels.length) {
-      updateProgress(currentUser, level, Number(time.innerText))
-      let boardSize = 2 + 2*level
-      removeAllScreens();
-      showGameBoard();
-      updateGameBar(level)
-      paintGameBoard(level - 1)
-      clearInterval(interval)
-      startTimer()
-      hideModal()
+      resetAndStartGameboard(level);
     } else {
-      removeAllScreens()
-      showHome()
+      quit();
     }
-  })
-  
+  });
 }
+
+function resetAndStartGameboard(level) {
+  removeAllScreens();
+  showGameBoard();
+  clearInterval(state.stopwatchInterval);
+  clearOpenedCards();
+  startTimer();
+  updateGameBar(level);
+  paintGameBoard(level - 1);
+  gameSound.play();
+  showAllCards();
+  hideElement(confetti);
+}
+
 function unmatch() {
   const [cardOne, cardTwo] = openedCards
   cardOne.classList.add('unmatched')
