@@ -503,14 +503,6 @@ function congruatulation() {
   }
 }
 
-;(function start() {
-  // shuffle(level1)
-  addImg(level1)
-  startTimer()
-  addEventListenerToButtons()
-  console.log('start game')
-})()
-
 function showGameBoard() {
   displayScreen('.screen2')
 }
@@ -738,6 +730,16 @@ function openedCard(e) {
     check(e.target)
   }
 }
+
+function play(user) {
+  state.currentuser = user;
+  getLevel(state.currentuser).then((response) => {
+    let level = response.level;
+    state.level = level;
+    resetAndStartGameboard(level);
+  });
+}
+
 function quit() {
   hideModal();
   hideElement(confetti);
@@ -756,3 +758,14 @@ function addEventForModalButtons() {
     quit();
   });
 }
+
+
+(function start() {
+  initializeDB().then(() => {
+    fetchUsers();
+  });
+  removeAllScreens();
+  showHome();
+  addEventForModalButtons();
+  addEventListenerToAddButton();
+})();
