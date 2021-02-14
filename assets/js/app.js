@@ -628,6 +628,41 @@ function retry() {
   gameSound.play();
 }
 
+function updateGameBar(level) {
+  bginfo.firstElementChild.textContent = `Level: ${level}`;
+  pauseGame.addEventListener("click", pause);
+  retryGame.addEventListener("click", retry);
+  bginfo.lastElementChild.addEventListener("click", quit);
+}
+
+function fetchUsers() {
+  const users = getUsers();
+  usersList.textContent = "";
+  users.then((response) => {
+    response.forEach((username) => {
+      let li = document.createElement("li");
+      let nameSpan = document.createElement("span");
+      nameSpan.textContent = username;
+      li.addEventListener("click", () => play(username));
+      let deleteSpan = document.createElement("span");
+      deleteSpan.innerHTML = "&#9747;";
+      deleteSpan.classList.add("delete-name");
+      deleteSpan.addEventListener(
+        "click",
+        (e) => {
+          e.stopPropagation();
+          deleteUser(username);
+        },
+        false
+      );
+
+      li.appendChild(nameSpan);
+      li.appendChild(deleteSpan);
+      usersList.appendChild(li);
+    });
+  });
+}
+
 function next() {
   getLevel(currentUser).then((response)=>{
     level = response.level + 1;
