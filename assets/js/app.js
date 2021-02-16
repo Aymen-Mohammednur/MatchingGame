@@ -114,15 +114,26 @@ const wrongSound = new Sound(sounds.wrong);
 const solvedSound = new Sound(sounds.solved);
 const winnerSound = new Sound(sounds.winner);
 
-function addUser() {
-  addUserToDatabase(nameInputField.value);
-  nameInputField.value = "";
-  fetchUsers();
+function removeAllScreens() {
+  screens.forEach((screen) => {
+    hideElement(screen);
+  });
+}
+
+function displayScreen(screen) {
+  document.querySelector(screen).style.display = "block";
+}
+
+function showGameBoard() {
+  displayScreen(".screen2");
+}
+
+function showHome() {
+  displayScreen(".screen1");
 }
 
 function getKind(element) {
-  const kind = element.getAttribute('kind')
-  return kind
+  return element.getAttribute("kind");
 }
 
 function isAllSame(cards) {
@@ -150,17 +161,30 @@ function Sound(src, loop = false) {
   };
 }
 
-//checks for duplicates. Accepts NodeList or normal list of Node Elements and compares kinds to find duplicates.
-function check() {
-  if (getKind(openedCards[0]) === getKind(openedCards[1])) {
-    match()
-  } else {
-    unmatch()
-  }
+function disable() {
+  cover.classList.add("disable");
 }
 
-function disable() {
-  cover.classList.add('disable')
+function enable() {
+  cover.classList.remove("disable");
+}
+
+// unMatch
+function unmatch() {
+  wrongSound.play();
+  disable();
+  state.openedCards.forEach((e) => {
+    e.classList.add("unmatched");
+    e.classList.remove("yellow");
+  });
+  setTimeout(() => {
+    state.openedCards.forEach((e) => {
+      e.classList.remove("unmatched", "open");
+      e.classList.add("covered");
+    });
+    enable();
+    clearOpenedCards();
+  }, 1000);
 }
 
 function match() {
@@ -206,6 +230,50 @@ function paintGameBoard(level) {
   gameBoard.appendChild(row);
 }
 
+//checks for duplicates. Accepts NodeList or normal list of Node Elements and compares kinds to find duplicates.
+function check() {
+  if (isAllSame(state.openedCards)) {
+    match();
+  } else {
+    unmatch();
+  }
+}
+
+function matchOrUnmatchAtMemorySize() {
+  if (state.openedCards.length === gameConfig.memorySize) {
+    check();
+  }
+}
+
+function displayCard(element) {
+  moveSound.play();
+  element.classList.add("open", "yellow");
+  element.classList.remove("covered");
+}
+
+function congruatulation() {
+  if (
+    document.querySelectorAll(".solved").length ===
+    document.querySelectorAll(".col").length
+  ) {
+    winnerSound.play();
+    pauseSound();
+    resetStopwatch();
+    updateProgress(
+      state.currentuser,
+      state.currentLevel + 1,
+      Number(time.innerText)
+    );
+    document.querySelector(".modal p").innerHTML = `
+      <h1 class="congra">Congruatulations!</h1><br/>You have sucessfully solved the puzzle.<br/>
+      <span class="time">Time:</span> ${state.minutes} min : ${state.seconds} sec
+    `;
+    showModal();
+    showElement(confetti);
+    pause();
+  }
+}
+
 function onCardClick(e) {
   const cardElement = e.target;
   // click validation
@@ -219,18 +287,18 @@ function onCardClick(e) {
 
 //shuffle array
 function shuffle(arr) {
-  var currentIndex = arr.length,
+  let currentIndex = arr.length,
     temp,
-    randomIndex
+    randomIndex;
   while (0 !== currentIndex) {
-    randomIndex = Math.floor(Math.random() * currentIndex)
-    currentIndex -= 1
-    temp = arr[currentIndex]
-    arr[currentIndex] = arr[randomIndex]
-    arr[randomIndex] = temp
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temp = arr[currentIndex];
+    arr[currentIndex] = arr[randomIndex];
+    arr[randomIndex] = temp;
   }
 
-  return arr
+  return arr;
 }
 
 // IndexDB
@@ -413,149 +481,12 @@ function updateProgress(user, level, cummulativeTime) {
   };
 }
 
-function next(currentUser) {
-  if (getLevel(currentUser) != 3) {
-    updateProgress(
-      currentUser,
-      setLevel(currentUser, getLevel(currentUser) + 1),
-      time.innerText,
-    )
-    window.open(`level${getLevel(currentUser) - 1}.html`)
-  }
-}
-
-// unMatch
-function unmatch() {
-  wrongSound.play();
-  disable();
-  state.openedCards.forEach((e) => {
-    e.classList.add("unmatched");
-    e.classList.remove("yellow");
-  });
-  setTimeout(() => {
-    state.openedCards.forEach((e) => {
-      e.classList.remove("unmatched", "open");
-      e.classList.add("covered");
-    });
-    enable();
-    clearOpenedCards();
-  }, 1000);
-}
-
-// startTimer
-function startTimer() {
-  resetStopwatch();
-  state.stopwatchInterval = setInterval(() => {
-    setMinuteAndSecond(state.minutes, state.seconds);
-    updateTime();
-  }, 1000);
-}
-
-function openedCard(e) {
-  if (e.target.getAttribute('disabled')) {
-    return
-  }
-  openedCards.push(e.target)
-  if (openedCards.length === 2) {
-    check(e.target)
-  }
-}
-function enable() {
-  cover.classList.remove('disable')
-}
-const reload = document.querySelector('.col-3')
-reload.addEventListener('click', quit)
-function quit() {
-  location.reload
-  window.location.href('index.html')
-}
-
-function displayCard(e) {
-  moveSound.play();
-  e.target.classList.add('open')
-  e.target.classList.remove('covered')
-}
-
-function addEventListenerToAddButton() {
-  addBtn.addEventListener("click", addUser, false);
-}
-
-function congruatulation() {
-  if (
-    document.querySelectorAll(".solved").length ===
-    document.querySelectorAll(".col").length
-  ) {
-    winnerSound.play();
-    pauseSound();
-    resetStopwatch();
-    updateProgress(
-      state.currentuser,
-      state.currentLevel + 1,
-      Number(time.innerText)
-    );
-    document.querySelector(".modal p").innerHTML = `
-      <h1 class="congra">Congruatulations!</h1><br/>You have sucessfully solved the puzzle.<br/>
-      <span class="time">Time:</span> ${state.minutes} min : ${state.seconds} sec
-    `;
-    showModal();
-    showElement(confetti);
-    pause();
-  }
-}
-
-function showGameBoard() {
-  displayScreen('.screen2')
-}
-
-function displayScreen(screen) {
-  document.querySelector(screen).style.display = 'block'
-}
-
-function removeAllScreens() {
-  screens.forEach(screen => {
-    hideElement(screen)
-  })
-}
-
-function play(user) {
-  currentUser = user;
-  getLevel(currentUser).then((response)=>{
-    level = response.level;
-    removeAllScreens();
-    showGameBoard();
-    clearInterval(interval);
-    startTimer();
-    updateGameBar(level);
-    paintGameBoard(level-1);
-  });
-
-}
-function check() {
-  if (isAllSame(state.openedCards)) {
-    match();
-  } else {
-    unmatch();
-  }
-}
-
-function matchOrUnmatchAtMemorySize() {
-  if (state.openedCards.length === gameConfig.memorySize) {
-    check();
-  }
-}
-
-function showHome() {
-  displayScreen('.screen1')
-}
-function disable() {
-  cover.classList.add('disable')
-}
-function hideModal() {
-  hideElement(modal)
-}
-
 function showModal() {
   showElement(modal);
+}
+
+function hideModal() {
+  hideElement(modal);
 }
 
 function hideElement(element) {
@@ -571,28 +502,6 @@ function resetMinuteAndSecond() {
   state.seconds = 0;
 }
 
-function updateTime() {
-  state.seconds++;
-  if (state.seconds === 60) {
-    state.minutes++;
-    state.seconds = 0;
-  }
-}
-
-
-function setMinuteAndSecond(min = 0, sec = 0) {
-  minutesDOM.textContent = min;
-  secondsDOM.textContent = sec;
-}
-
-function resetState() {
-  state = { ...intialState };
-}
-
-function resetStopwatch() {
-  clearInterval(state.stopwatchInterval);
-}
-
 function pause(e) {
   resetStopwatch();
   gameSound.stop();
@@ -604,6 +513,65 @@ function unpause() {
   if (state.isPaused) pauseGame.textContent = "Pause";
   startTimer();
   gameSound.play();
+}
+
+function startTimer() {
+  resetStopwatch();
+  state.stopwatchInterval = setInterval(() => {
+    setMinuteAndSecond(state.minutes, state.seconds);
+    updateTime();
+  }, 1000);
+}
+
+function resetStopwatch() {
+  clearInterval(state.stopwatchInterval);
+}
+
+function updateTime() {
+  state.seconds++;
+  if (state.seconds === 60) {
+    state.minutes++;
+    state.seconds = 0;
+  }
+}
+
+function quit() {
+  hideModal();
+  hideElement(confetti);
+  removeAllScreens();
+  showHome();
+  setMinuteAndSecond();
+  gameSound.stop();
+  resetStopwatch();
+  resetState();
+}
+
+function resetState() {
+  state = { ...intialState };
+}
+
+function setMinuteAndSecond(min = 0, sec = 0) {
+  minutesDOM.textContent = min;
+  secondsDOM.textContent = sec;
+}
+
+function addEventForModalButtons() {
+  buttonNext.addEventListener("click", () => {
+    next();
+  });
+  buttonQuit.addEventListener("click", () => {
+    quit();
+  });
+}
+
+function addUser() {
+  addUserToDatabase(nameInputField.value);
+  nameInputField.value = "";
+  fetchUsers();
+}
+
+function addEventListenerToAddButton() {
+  addBtn.addEventListener("click", addUser, false);
 }
 
 function retry() {
@@ -625,26 +593,6 @@ function updateGameBar(level) {
   pauseGame.addEventListener("click", pause);
   retryGame.addEventListener("click", retry);
   bginfo.lastElementChild.addEventListener("click", quit);
-}
-
-function deleteUser(username) {
-  removeUser(username);
-  fetchUsers();
-}
-
-function showAllCards() {
-  disable();
-  document.querySelectorAll(".col").forEach((card) => {
-    card.classList.remove("covered");
-    card.classList.add("blue");
-  });
-  setTimeout(() => {
-    document.querySelectorAll(".col").forEach((card) => {
-      card.classList.add("covered");
-      card.classList.remove("blue");
-    });
-    enable();
-  }, 2000);
 }
 
 function fetchUsers() {
@@ -675,6 +623,11 @@ function fetchUsers() {
   });
 }
 
+function deleteUser(username) {
+  removeUser(username);
+  fetchUsers();
+}
+
 function next() {
   hideModal();
   gameSound.stop();
@@ -690,6 +643,21 @@ function next() {
   });
 }
 
+function showAllCards() {
+  disable();
+  document.querySelectorAll(".col").forEach((card) => {
+    card.classList.remove("covered");
+    card.classList.add("blue");
+  });
+  setTimeout(() => {
+    document.querySelectorAll(".col").forEach((card) => {
+      card.classList.add("covered");
+      card.classList.remove("blue");
+    });
+    enable();
+  }, 2000);
+}
+
 function resetAndStartGameboard(level) {
   removeAllScreens();
   showGameBoard();
@@ -703,34 +671,6 @@ function resetAndStartGameboard(level) {
   hideElement(confetti);
 }
 
-function unmatch() {
-  const [cardOne, cardTwo] = openedCards
-  cardOne.classList.add('unmatched')
-  cardTwo.classList.add('unmatched')
-  disable()
-console.log(openedCards)
-  setTimeout(() => {
-    cardOne.classList.remove('unmatched', 'open')
-    cardTwo.classList.remove('unmatched', 'open')
-    cardOne.classList.add('covered')
-    cardTwo.classList.add('covered')
-    openedCards = new Array()
-    enable()
-  }, 1000)
-}
-function openedCard(e) {
-  if (
-    e.target.getAttribute('disabled') ||
-    e.target.classList.contains('open')
-  ) {
-    return
-  }
-  openedCards.push(e.target)
-  if (openedCards.length === 2) {
-    check(e.target)
-  }
-}
-
 function play(user) {
   state.currentuser = user;
   getLevel(state.currentuser).then((response) => {
@@ -739,26 +679,6 @@ function play(user) {
     resetAndStartGameboard(level);
   });
 }
-
-function quit() {
-  hideModal();
-  hideElement(confetti);
-  removeAllScreens();
-  showHome();
-  setMinuteAndSecond();
-  gameSound.stop();
-  resetStopwatch();
-  resetState();
-}
-function addEventForModalButtons() {
-  buttonNext.addEventListener("click", () => {
-    next();
-  });
-  buttonQuit.addEventListener("click", () => {
-    quit();
-  });
-}
-
 
 (function start() {
   initializeDB().then(() => {
