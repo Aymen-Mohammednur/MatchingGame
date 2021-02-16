@@ -89,9 +89,9 @@ const intialState = {
   stopwatchInterval: null,
   currentuser: null,
   openedCards: [],
-  currentLevel: 1,
+  currentLevel: 1
 };
-let state = { ...intialState };
+let state = {...intialState};
 //// CONFIGURATION
 levelOne = [4, 4]; // 4 x 4 grid
 levelTwo = [5, 6]; // 5 x 6 grid
@@ -102,11 +102,11 @@ const gameConfig = {
 };
 
 const sounds = {
-  winner: "/assets/sounds/winner.mp3",
-  solved: "/assets/sounds/solved.mp3",
-  wrong: "/assets/sounds/wrong.mp3",
-  moved: "/assets/sounds/moved.wav",
-  game: "/assets/sounds/game.wav",
+  winner: "./assets/sounds/winner.mp3",
+  solved: "./assets/sounds/solved.mp3",
+  wrong: "./assets/sounds/wrong.mp3",
+  moved: "./assets/sounds/moved.wav",
+  game: "./assets/sounds/game.wav",
 };
 const gameSound = new Sound(sounds.game, true);
 const moveSound = new Sound(sounds.moved);
@@ -251,19 +251,15 @@ function displayCard(element) {
   element.classList.remove("covered");
 }
 
+
 function congruatulation() {
   if (
     document.querySelectorAll(".solved").length ===
     document.querySelectorAll(".col").length
   ) {
     winnerSound.play();
-    pauseSound();
     resetStopwatch();
-    updateProgress(
-      state.currentuser,
-      state.currentLevel + 1,
-      Number(time.innerText)
-    );
+    updateProgress(state.currentuser, state.currentLevel + 1, Number(time.innerText));
     document.querySelector(".modal p").innerHTML = `
       <h1 class="congra">Congruatulations!</h1><br/>You have sucessfully solved the puzzle.<br/>
       <span class="time">Time:</span> ${state.minutes} min : ${state.seconds} sec
@@ -497,7 +493,7 @@ function showElement(element) {
   element.style.display = "block";
 }
 
-function resetMinuteAndSecond() {
+function resetMinuteAndSecond(){
   state.minutes = 0;
   state.seconds = 0;
 }
@@ -506,7 +502,7 @@ function pause(e) {
   resetStopwatch();
   gameSound.stop();
   state.isPaused = true;
-  pauseGame.textContent = "Paused";
+  pauseGame.textContent = "Paused"
 }
 
 function unpause() {
@@ -537,7 +533,7 @@ function updateTime() {
 
 function quit() {
   hideModal();
-  hideElement(confetti);
+  hideElement(confetti)
   removeAllScreens();
   showHome();
   setMinuteAndSecond();
@@ -574,18 +570,18 @@ function addEventListenerToAddButton() {
   addBtn.addEventListener("click", addUser, false);
 }
 
-function retry() {
-  removeAllScreens();
-  showGameBoard();
-  setMinuteAndSecond();
-  resetStopwatch();
-  resetMinuteAndSecond();
-  clearOpenedCards();
-  startTimer();
-  let l = state.currentLevel;
-  paintGameBoard(l - 1);
-  showAllCards();
-  gameSound.play();
+function retry(){
+    removeAllScreens();
+    showGameBoard();
+    setMinuteAndSecond();
+    resetStopwatch();
+    resetMinuteAndSecond();
+    clearOpenedCards();
+    startTimer();
+    let l = state.currentLevel;
+    paintGameBoard(l-1);
+    showAllCards();
+    gameSound.play();
 }
 
 function updateGameBar(level) {
@@ -607,14 +603,7 @@ function fetchUsers() {
       let deleteSpan = document.createElement("span");
       deleteSpan.innerHTML = "&#9747;";
       deleteSpan.classList.add("delete-name");
-      deleteSpan.addEventListener(
-        "click",
-        (e) => {
-          e.stopPropagation();
-          deleteUser(username);
-        },
-        false
-      );
+      deleteSpan.addEventListener("click", (e) => {e.stopPropagation();deleteUser(username)}, false);
 
       li.appendChild(nameSpan);
       li.appendChild(deleteSpan);
