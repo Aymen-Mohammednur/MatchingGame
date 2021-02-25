@@ -1,19 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
 *{
   box-sizing: border-box;
 }
 body {
   height: 100%;
-  background-image: url('../img/sun2.png');
-  font-family: 'Roboto', sans-serif;
+  background-image: url('https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NTR8fGJhY2tncm91bmR8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+  background-repeat: no-repeat;
+  background-size: 100% ;
+  font-family: 'Major Mono Display', monospace;
   font-weight: 800;
 }
 img {
   max-height: 2rem;
 }
-
+h1{
+  padding:2rem;
+}
 .row {
   display: flex;
   flex-wrap: wrap;
+  padding-top: 40px;
+  
 }
 .screen{
   display: flex;
@@ -23,11 +30,12 @@ img {
 .col {
   display: flex;
   text-align: center;
-  background-color: rgb(255, 238, 238);
-  height: 3.5rem;
+  background-color: rgb(233, 213, 217);
+  height: 4.5rem;
+  width: 4.5rem;
   align-items: center;
   justify-content: center;
-  border: 2px solid black;
+  border: 1px solid black;
   border-radius: 4px;
   box-shadow: 2px 2px #222;
   perspective: 1000px;
@@ -37,12 +45,16 @@ img {
   flex: 0 1 auto;
 }
 
+.btn-primary{
+  font-family: 'Major Mono Display', monospace;
+  
 
+}
 
 .btn {
   color: #fff;
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #08b5bb;
+  border-color: #1c6cc2;
   display: inline-block;
   font-weight: 400;
   text-align: center;
@@ -68,14 +80,19 @@ i {
     padding: 2rem;
     margin: 1rem auto;
 }
-
+.pcss{
+  line-height: 2.2rem;
+  width: 4.3rem;
+  color: white;
+  background-color: #08b5bb;
+}
 .col-2 {
   text-align: center;
   cursor: pointer;
   background-color: white;
   border-radius: 4px;
   box-shadow: 2px 2px #222;
-  padding: 5px;
+  
 }
 .col-2:hover {
   background-color: white;
@@ -84,18 +101,18 @@ i {
 }
 
 .bg-info {
-  margin-bottom: 4px;
+  margin-bottom: 10px;
+  padding: 0;
   display: flex;
   justify-content: space-between;
   color:black;
   margin-left: auto;
-  background-color: #0dcaf0;
-  padding: 0.2rem 1rem;
   text-align: center;
 }
 
 .level, .time {
   align-self: center;
+  width: max-content;
 }
 
 
