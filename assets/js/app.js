@@ -579,6 +579,7 @@ function retry(){
     clearOpenedCards();
     startTimer();
     let l = state.currentLevel;
+    console.log(l);
     paintGameBoard(l-1);
     showAllCards();
     gameSound.play();

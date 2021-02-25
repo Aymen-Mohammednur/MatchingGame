@@ -16,6 +16,9 @@ img {
 h1{
   padding:2rem;
 }
+h5{
+  font-size: medium;
+}
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -30,6 +33,7 @@ h1{
 .col {
   display: flex;
   text-align: center;
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwI2WFn5onHgYV7dQfhOF6M9k4KY_5dM5Xkw&usqp=CAU');
   background-color: rgb(233, 213, 217);
   height: 4.5rem;
   width: 4.5rem;
@@ -52,6 +56,7 @@ h1{
 }
 
 .btn {
+  font-family: 'Major Mono Display', monospace;
   color: #fff;
   background-color: #08b5bb;
   border-color: #1c6cc2;
@@ -73,12 +78,13 @@ i {
 
 .col-8 {
     width: 400px;
-    background: #ddd;
+    background: rgb(245, 243, 243);
     min-height: 50vh;
     display: flex;
     flex-direction: column;
     padding: 2rem;
     margin: 1rem auto;
+    border-radius: 10px;
 }
 .pcss{
   line-height: 2.2rem;
@@ -132,7 +138,7 @@ i {
 .userinput {
   border: none;
   border-radius: 0.4rem;
-  height: 30px;
+  height: 35px;
   width: 100%;
   padding: 8px;
 }
@@ -147,6 +153,7 @@ i {
   padding: 0.5rem;
   margin: 0.5rem 0;
   min-width: 250px;
+  border-radius: 10px;
   box-shadow: 0 5px 2px 0 #ccc;
 
 
@@ -154,7 +161,7 @@ i {
 
 .list-group > li{
   margin:1rem;
-  background-color: #95c3de;
+  background-color: #e1e8ec;
   min-width: 250px;
   box-shadow: 0 5px 2px 0 #ccc;
   border-radius: 10px;
