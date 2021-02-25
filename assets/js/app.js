@@ -502,11 +502,11 @@ function pause(e) {
   resetStopwatch();
   gameSound.stop();
   state.isPaused = true;
-  pauseGame.textContent = "Paused"
+  pauseGame.firstElementChild.textContent = "Paused"
 }
 
 function unpause() {
-  if (state.isPaused) pauseGame.textContent = "Pause";
+  if (state.isPaused) pauseGame.firstElementChild.textContent = "Pause";
   startTimer();
   gameSound.play();
 }
