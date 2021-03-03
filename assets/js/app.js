@@ -71,6 +71,7 @@ const usersList = document.querySelector("#list");
 const time = document.querySelector(".time");
 const cover = document.querySelector(".cover");
 const buttonQuit = document.querySelector("#quit");
+const buttonQuit2 = document.querySelector("#quit2");
 const buttonNext = document.querySelector("#next");
 const bginfo = document.querySelector(".bg-info");
 const secondsDOM = document.querySelector(".sec");
@@ -80,6 +81,7 @@ const retryGame = document.querySelector(".retry");
 const level = document.querySelector(".level");
 const screens = document.querySelectorAll(".screen");
 const modal = document.querySelector("#myModal");
+const failModal = document.querySelector("#myFailModal");
 const reload = document.querySelector(".col-3");
 const confetti = document.querySelector(".container-confetti");
 const intialState = {
@@ -274,10 +276,8 @@ function gameOver() {
   resetStopwatch();
   updateProgress(state.currentuser, state.currentLevel + 1, Number(time.innerText));
   document.querySelector(".modal p").innerHTML = `
-    <h1 class="congra">Game Over!</h1><br/>You have sucessfully solved the puzzle.<br/>
-    <span class="time">Time:</span> ${state.minutes} min : ${state.seconds} sec
-  `;
-  showModal();
+    <h1 class="congra">Game Over!</h1><br/>You failed to fix the puzzle in time.<br/>`;
+  showFailModal();
   pause();
 }
 
@@ -502,9 +502,15 @@ function updateProgress(user, level, cummulativeTime) {
 function showModal() {
   showElement(modal);
 }
+function showFailModal() {
+  showElement(failModal);
+}
 
 function hideModal() {
   hideElement(modal);
+}
+function hideFailModal() {
+  hideElement(failModal);
 }
 
 function hideElement(element) {
@@ -570,6 +576,16 @@ function quit() {
   resetStopwatch();
   resetState();
 }
+function quit2() {
+  hideFailModal();
+  hideElement(confetti)
+  removeAllScreens();
+  showHome();
+  setMinuteAndSecond();
+  gameSound.stop();
+  resetStopwatch();
+  resetState();
+}
 
 function resetState() {
   state = { ...intialState };
@@ -586,6 +602,9 @@ function addEventForModalButtons() {
   });
   buttonQuit.addEventListener("click", () => {
     quit();
+  });
+  buttonQuit2.addEventListener("click", () => {
+    quit2();
   });
 }
 
