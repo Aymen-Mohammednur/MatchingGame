@@ -84,7 +84,7 @@ const reload = document.querySelector(".col-3");
 const confetti = document.querySelector(".container-confetti");
 const intialState = {
   play: false,
-  seconds: 0,
+  seconds: 5,
   minutes: 0,
   stopwatchInterval: null,
   currentuser: null,
@@ -270,6 +270,17 @@ function congruatulation() {
   }
 }
 
+function gameOver() {
+  resetStopwatch();
+  updateProgress(state.currentuser, state.currentLevel + 1, Number(time.innerText));
+  document.querySelector(".modal p").innerHTML = `
+    <h1 class="congra">Game Over!</h1><br/>You have sucessfully solved the puzzle.<br/>
+    <span class="time">Time:</span> ${state.minutes} min : ${state.seconds} sec
+  `;
+  showModal();
+  pause();
+}
+
 function onCardClick(e) {
   const cardElement = e.target;
   // click validation
@@ -277,6 +288,17 @@ function onCardClick(e) {
   state.openedCards.push(cardElement);
   displayCard(cardElement);
   matchOrUnmatchAtMemorySize(cardElement);
+  congruatulation();
+  unpause();
+}
+
+function onTimeEnd() {
+  // const cardElement = e.target;
+  // // click validation
+  // if (cardElement.classList.contains("open")) return;
+  // state.openedCards.push(cardElement);
+  // displayCard(cardElement);
+  // matchOrUnmatchAtMemorySize(cardElement);
   congruatulation();
   unpause();
 }
@@ -524,11 +546,18 @@ function resetStopwatch() {
 }
 
 function updateTime() {
-  state.seconds++;
-  if (state.seconds === 60) {
-    state.minutes++;
-    state.seconds = 0;
+  if (state.minutes === 0 && state.seconds === 0) {
+    gameOver();
   }
+  else if (state.seconds === 0) {
+    state.minutes--;
+    state.seconds = 59;
+  }
+  else {
+    state.seconds--;
+  }
+    
+  
 }
 
 function quit() {
