@@ -71,8 +71,8 @@ const usersList = document.querySelector("#list");
 const time = document.querySelector(".time");
 const cover = document.querySelector(".cover");
 const buttonQuit = document.querySelector("#quit");
-const buttonQuit2 = document.querySelector("#quit2");
 const buttonNext = document.querySelector("#next");
+const buttonQuit2 = document.querySelector("#quit2");
 const bginfo = document.querySelector(".bg-info");
 const secondsDOM = document.querySelector(".sec");
 const minutesDOM = document.querySelector(".min");
@@ -81,12 +81,12 @@ const retryGame = document.querySelector(".retry");
 const level = document.querySelector(".level");
 const screens = document.querySelectorAll(".screen");
 const modal = document.querySelector("#myModal");
-const failModal = document.querySelector("#myFailModal");
 const reload = document.querySelector(".col-3");
 const confetti = document.querySelector(".container-confetti");
+const scoreboard = document.querySelector("#rank-users")
 const intialState = {
   play: false,
-  seconds: 5,
+  seconds: 0,
   minutes: 0,
   stopwatchInterval: null,
   currentuser: null,
@@ -254,6 +254,11 @@ function displayCard(element) {
 }
 
 
+function calculateSeconds(val){
+  minWithSec = val.split(":")
+  return (Number(minWithSec[0])*60) + (Number(minWithSec[1]))
+}
+
 function congruatulation() {
   if (
     document.querySelectorAll(".solved").length ===
@@ -261,7 +266,15 @@ function congruatulation() {
   ) {
     winnerSound.play();
     resetStopwatch();
-    updateProgress(state.currentuser, state.currentLevel + 1, Number(time.innerText));
+    
+    getTime(state.currentuser).then((res)=>{
+       updateProgress(
+         state.currentuser,
+         state.currentLevel + 1,
+         calculateSeconds(time.textContent) + Number(res)
+       );
+    })
+   
     document.querySelector(".modal p").innerHTML = `
       <h1 class="congra">Congruatulations!</h1><br/>You have sucessfully solved the puzzle.<br/>
       <span class="time">Time:</span> ${state.minutes} min : ${state.seconds} sec
@@ -288,17 +301,6 @@ function onCardClick(e) {
   state.openedCards.push(cardElement);
   displayCard(cardElement);
   matchOrUnmatchAtMemorySize(cardElement);
-  congruatulation();
-  unpause();
-}
-
-function onTimeEnd() {
-  // const cardElement = e.target;
-  // // click validation
-  // if (cardElement.classList.contains("open")) return;
-  // state.openedCards.push(cardElement);
-  // displayCard(cardElement);
-  // matchOrUnmatchAtMemorySize(cardElement);
   congruatulation();
   unpause();
 }
@@ -433,24 +435,28 @@ function getLevel(user) {
 
 // show the time it took a user to finish the game
 function getTime(user) {
-  let transaction = DB.transaction("MatchingGame", "readonly");
-  let objectStore = transaction.objectStore("MatchingGame");
-  let request = objectStore.openCursor();
+  return new Promise((resolve, reject)=>{
+    let transaction = DB.transaction("MatchingGame", "readonly");
+    let objectStore = transaction.objectStore("MatchingGame");
+    let request = objectStore.openCursor();
 
-  request.onsuccess = (e) => {
-    let cursor = e.target.result;
-    if (cursor) {
-      if (cursor.key != user) {
-        cursor.continue();
-      } else {
-        return cursor.value.cummulativeTime;
+    request.onsuccess = (e) => {
+      let cursor = e.target.result;
+      if (cursor) {
+        if (cursor.key != user) {
+          cursor.continue();
+        } else {
+          resolve(cursor.value.cummulativeTime);
+        }
       }
-    }
-  };
+    };
 
-  request.onerror = () => {
-    console.log("There was an error");
-  };
+    request.onerror = (e) => {
+      console.log("There was an error");
+      reject(e);
+    };
+  })
+  
 }
 
 function setLevel(user, level) {
@@ -499,18 +505,29 @@ function updateProgress(user, level, cummulativeTime) {
   };
 }
 
+function getAllRow(user) {
+    return new Promise((resolve, reject) => {
+      let transaction = DB.transaction(["MatchingGame"], "readonly");
+      let objectStore = transaction.objectStore("MatchingGame");
+      let request = objectStore.getAll();
+
+      request.onsuccess = (e) => {
+        resolve(request.result);
+      };
+
+      request.onerror = () => {
+        reject();
+        console.log("There was an error");
+      };
+    });
+}
+
 function showModal() {
   showElement(modal);
-}
-function showFailModal() {
-  showElement(failModal);
 }
 
 function hideModal() {
   hideElement(modal);
-}
-function hideFailModal() {
-  hideElement(failModal);
 }
 
 function hideElement(element) {
@@ -552,32 +569,40 @@ function resetStopwatch() {
 }
 
 function updateTime() {
-  if (state.minutes === 0 && state.seconds === 0) {
-    gameOver();
+  state.seconds++;
+  if (state.seconds === 60) {
+    state.minutes++;
+    state.seconds = 0;
   }
-  else if (state.seconds === 0) {
-    state.minutes--;
-    state.seconds = 59;
-  }
-  else {
-    state.seconds--;
-  }
-    
-  
 }
+
+function setTimes() {
+  if (state.currentLevel == 2) {
+    state.minutes == 1;
+    state.seconds == 20;
+  }
+  else if (state.currentLevel == 3) {
+    state.minutes == 2;
+    state.seconds == 0;
+  }
+}
+
+// function updateTime() {
+//   if (state.minutes === 0 && state.seconds === 0) {
+//     gameOver();
+//   }
+//   else if (state.seconds === 0) {
+//     state.minutes--;
+//     state.seconds = 59;
+//   }
+//   else {
+//     state.seconds--;
+//   }
+  
+// }
 
 function quit() {
   hideModal();
-  hideElement(confetti)
-  removeAllScreens();
-  showHome();
-  setMinuteAndSecond();
-  gameSound.stop();
-  resetStopwatch();
-  resetState();
-}
-function quit2() {
-  hideFailModal();
   hideElement(confetti)
   removeAllScreens();
   showHome();
@@ -627,7 +652,7 @@ function retry(){
     clearOpenedCards();
     startTimer();
     let l = state.currentLevel;
-    console.log(l);
+    // console.log("retry: ", l);
     paintGameBoard(l-1);
     showAllCards();
     gameSound.play();
@@ -670,6 +695,7 @@ function next() {
   hideModal();
   gameSound.stop();
   getLevel(state.currentuser).then((response) => {
+    // console.log("next: ", response.level)
     let level = response.level;
     state.currentLevel = level;
     numLevels = gameConfig.levels;
@@ -697,13 +723,15 @@ function showAllCards() {
 }
 
 function resetAndStartGameboard(level) {
+  // console.log("Paint: " + level);
   removeAllScreens();
   showGameBoard();
   clearInterval(state.stopwatchInterval);
   clearOpenedCards();
   startTimer();
   updateGameBar(level);
-  paintGameBoard(level - 1);
+  paintGameBoard(level-1);
+  drawScoreBoard();
   gameSound.play();
   showAllCards();
   hideElement(confetti);
@@ -713,9 +741,41 @@ function play(user) {
   state.currentuser = user;
   getLevel(state.currentuser).then((response) => {
     let level = response.level;
+    console.log("play: " + level);
     state.level = level;
     resetAndStartGameboard(level);
   });
+}
+
+function drawScoreBoard(){
+  getAllRow().then((response, reject)=>{
+    // prepare sortable score
+    response = response.map((ele)=>{
+      if(ele.cummulativeTime == 0)
+        ele.score = 100000000;
+      else
+        ele.score = (ele.cummulativeTime * (gameConfig.levels.length - ele.level))
+      return ele
+    })
+
+    // sort by score
+    response.sort((a,b)=>{
+      return  a.score - b.score
+    })
+
+    // display user leaderboard
+    scoreboard.innerHTML = "";
+    let i = 0;
+    response.forEach((user)=>{
+      let li = document.createElement("li");
+      let nameSpan = document.createElement("span");
+      nameSpan.textContent = `#${i++} ` + user.user + " <=> " + (user.score == 100000000? -Infinity : user.score);
+      li.appendChild(nameSpan);
+      scoreboard.appendChild(li);
+    })
+  })
+
+
 }
 
 (function start() {

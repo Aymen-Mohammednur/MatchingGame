@@ -27,9 +27,10 @@ h5{
 }
 .screen{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
 }
+
 .col {
   display: flex;
   text-align: center;
@@ -86,6 +87,10 @@ i {
     margin: 1rem auto;
     border-radius: 10px;
 }
+
+.col-1{
+  width:fit-content;
+}
 .pcss{
   line-height: 2.2rem;
   width: 4.3rem;
@@ -116,9 +121,17 @@ i {
   text-align: center;
 }
 
+.help{
+  margin-top: 1rem;
+}
+
 .level, .time {
   align-self: center;
   width: max-content;
+}
+
+.scoreboard{
+  margin-left:1rem;
 }
 
 
@@ -152,23 +165,25 @@ i {
   background: white;
   padding: 0.5rem;
   margin: 0.5rem 0;
-  min-width: 250px;
   border-radius: 10px;
   box-shadow: 0 5px 2px 0 #ccc;
-
-
 }
 
 .list-group > li{
   margin:1rem;
   background-color: #e1e8ec;
-  min-width: 250px;
+  min-width: 180px;
   box-shadow: 0 5px 2px 0 #ccc;
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
   padding: 1rem;
   align-items: center;
+}
+
+.game{
+  display:flex;
+  flex-direction: row;
 }
 
 .delete-name {
@@ -179,7 +194,6 @@ i {
   background:rgb(235, 60, 60);
   color: white;
   border-radius: 50%;
-
 }
 /* Modal */
 
@@ -232,7 +246,7 @@ i {
   background-color: rgb(93, 233, 168);
 }
 .container {
-    width: 500px;
+    width: 80%;
     margin: 0 auto;
 }
 @media (max-width: 360px) {
