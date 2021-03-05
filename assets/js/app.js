@@ -84,6 +84,7 @@ const modal = document.querySelector("#myModal");
 const reload = document.querySelector(".col-3");
 const confetti = document.querySelector(".container-confetti");
 const scoreboard = document.querySelector("#rank-users")
+const failModal = document.querySelector("#myFailModal");
 const intialState = {
   play: false,
   seconds: 0,
@@ -287,9 +288,6 @@ function congruatulation() {
 
 function gameOver() {
   resetStopwatch();
-  updateProgress(state.currentuser, state.currentLevel + 1, Number(time.innerText));
-  document.querySelector(".modal p").innerHTML = `
-    <h1 class="congra">Game Over!</h1><br/>You failed to fix the puzzle in time.<br/>`;
   showFailModal();
   pause();
 }
@@ -526,6 +524,14 @@ function showModal() {
   showElement(modal);
 }
 
+function showFailModal(){
+  showElement(failModal)
+}
+
+function hideFailModal() {
+  hideElement(failModal);
+}
+
 function hideModal() {
   hideElement(modal);
 }
@@ -574,6 +580,20 @@ function updateTime() {
     state.minutes++;
     state.seconds = 0;
   }
+
+  if((state.seconds + state.minutes*60) > 45 && state.level == 1){
+    console.log("level: 1")
+    gameOver()
+  } 
+  if( (state.seconds + state.minutes*60) > 105 && state.level == 2){
+    console.log("level: 2");
+    gameOver()
+  }
+  if((state.seconds + state.minutes*60) > 145 && state.level == 3){
+    console.log("level: 3");
+    gameOver()
+  }
+
 }
 
 function setTimes() {
@@ -603,6 +623,7 @@ function setTimes() {
 
 function quit() {
   hideModal();
+  hideFailModal();
   hideElement(confetti)
   removeAllScreens();
   showHome();
@@ -629,7 +650,7 @@ function addEventForModalButtons() {
     quit();
   });
   buttonQuit2.addEventListener("click", () => {
-    quit2();
+    quit();
   });
 }
 
@@ -700,6 +721,7 @@ function next() {
     state.currentLevel = level;
     numLevels = gameConfig.levels;
     if (level - 1 < numLevels.length) {
+      resetMinuteAndSecond();
       resetAndStartGameboard(level);
     } else {
       quit();
@@ -765,7 +787,7 @@ function drawScoreBoard(){
 
     // display user leaderboard
     scoreboard.innerHTML = "";
-    let i = 0;
+    let i = 1;
     response.forEach((user)=>{
       let li = document.createElement("li");
       let nameSpan = document.createElement("span");

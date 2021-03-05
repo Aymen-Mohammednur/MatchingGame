@@ -18,86 +18,86 @@
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
-    <div class="cover"></div>
-    <div id="myModal" class="modal">
-      <div class="modal-content">
-        <p>Some text in the Modal..</p>
-        <button id="quit" class="btn mp">Quit</button>
-        <button id="next" class="btn mp">Next</button>
+    <body>
+      <div class="cover"></div>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <p>Some text in the Modal..</p>
+          <button id="quit" class="btn mp">Quit</button>
+          <button id="next" class="btn mp">Next</button>
+        </div>
       </div>
-    </div>
-    <div id="myFailModal" class="modal">
-      <div class="modal-content">
-        <p>Some text in the Modal..</p>
-        <button id="quit2" class="btn mp">Quit</button>
+      <div id="myFailModal" class="modal">
+        <div class="modal-content">
+  <h1 class="congra">Game Over!</h1><br/>You failed to fix the puzzle in time.<br/>
+          <button id="quit2" class="btn mp" onclick="quit()">Quit</button>
+        </div>
       </div>
-    </div>
-    <div class="container">
-      <h1 style="text-align: center">Matchmaking Game</h1>
-      <div class="screen screen1">
-        <div class="row">
-          <div class="col-8 gap">
-            <h5>New user</h5>
-            <input class="userinput" type="" id="newUser" />
-            <button class="btn mp" style="color: white" id="add">Add</button>
-            <div class="help">
-              <h3>Do you have questions about the game?</h3>
-              <a href="./help.html">HELP</a>
+      <div class="container">
+        <h1 style="text-align: center">Matchmaking Game</h1>
+        <div class="screen screen1">
+          <div class="row">
+            <div class="col-8 gap">
+              <h5>New user</h5>
+              <input class="userinput" type="" id="newUser" />
+              <button class="btn mp" style="color: white" id="add">Add</button>
+              <div class="help">
+                <h3>Do you have questions about the game?</h3>
+                <a href="./help.html">HELP</a>
+              </div>
             </div>
+  
           </div>
-
-        </div>
-        <div class="row">
-          <div class="col-8">
-            <h5>Usernames</h5>
-            <ul class="list-group" id="list">
-              <!--where the added username list will be-->
-            </ul>
-          </div>
-        </div>
-      </div>
-      <!-- Game screen -->
-
-      <div class="screen screen2">
-        <div class="bg-info">
-          <div class="level">Level 1</div>
-          <div class="time">
-            <span class="min">0</span> : <span class="sec">0</span>
-          </div>
-          <div class="col-2 pause">
-            <button type="button" class="btn btn-primary">Pause</button>
-          </div>
-          <div class="col-2 retry">
-            <button type="button" class="btn btn-primary">Retry</button>
-          </div>
-          <div class="col-2">
-            <button type="button" class="btn btn-primary">Quit</button>
-          </div>
-        </div>
-        <div class="game">
-          <div class="game-board"></div>
-          <div class="scoreboard">
-            <div class="col-1">
-              <h5>Scoreboard</h5>
-              <ul class="list-group" id="rank-users"></ul>
+          <div class="row">
+            <div class="col-8">
+              <h5>Usernames</h5>
+              <ul class="list-group" id="list">
+                <!--where the added username list will be-->
+              </ul>
             </div>
           </div>
         </div>
+        <!-- Game screen -->
+  
+        <div class="screen screen2">
+          <div class="bg-info">
+            <div class="level">Level 1</div>
+            <div class="time">
+              <span class="min">0</span> : <span class="sec">0</span>
+            </div>
+            <div class="col-2 pause">
+              <button type="button" class="btn btn-primary">Pause</button>
+            </div>
+            <div class="col-2 retry">
+              <button type="button" class="btn btn-primary">Retry</button>
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn btn-primary">Quit</button>
+            </div>
+          </div>
+          <div class="game">
+            <div class="game-board"></div>
+            <div class="scoreboard">
+              <div class="col-1">
+                <h5>Scoreboard</h5>
+                <ul class="list-group" id="rank-users"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="container-confetti" style="display: none">
-      <div class="confetti"></div>
-      <div class="confetti"></div>
-      <div class="confetti"></div>
-      <div class="confetti"></div>
-      <div class="confetti"></div>
-      <div class="confetti"></div>
-      <div class="confetti"></div>
-      <div class="confetti"></div>
-      <div class="confetti"></div>
-      <div class="confetti"></div>
-    </div>
-    <script src="assets/js/app.js"></script>
-  </body>
+  
+      <div class="container-confetti" style="display: none">
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+      </div>
+      <script src="assets/js/app.js"></script>
 </html>
